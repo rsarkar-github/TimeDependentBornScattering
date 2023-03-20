@@ -2,17 +2,35 @@ import numpy as np
 import numba
 import scipy.ndimage as spim
 import matplotlib.pyplot as plt
-from .Utils import ricker_time, cosine_taper_2d, boxcar_taper_2d, laplacian
+from .Utils import cosine_taper_2d, boxcar_taper_2d, laplacian
+
+
+# TODO: These codes are not final
 
 
 def acoustic_propagator(
         vel2d, dx: float, dz: float, dt: float, fmax: float,
         source_wavefield,
         propagated_wavefield,
-        ncells_pad_x: int=0,
-        ncells_pad_z: int=0,
+        ncells_pad_x: int = 0,
+        ncells_pad_z: int = 0,
         check_params=True
 ):
+    """
+    Perform acoustic wave propagation using source_wavefield. The results is returned in propagated_wavefield.
+
+    :param vel2d: (ndarray) 2D numpy array of dtype float32, of shape (nz, nx)
+    :param dx: (float) grid spacing in x (in m)
+    :param dz: (float) grid spacing in z (in m)
+    :param dt: (float) time step in t (in s)
+    :param fmax: (float) max frequency (in Hertz) for CFL condition calculation
+    :param source_wavefield: (ndarray) 3D numpy array of dtype float32, of shape (nt, nz, nx)
+    :param propagated_wavefield: (ndarray) 3D numpy array of dtype float32, of shape (nt, nz, nx)
+    :param ncells_pad_x: (int) Number of padding cells in x direction
+    :param ncells_pad_z: (int) Number of padding cells in z direction
+    :param check_params: (bool) Checks some inputs
+    :return:
+    """
 
     if check_params:
         # Check dimensions
