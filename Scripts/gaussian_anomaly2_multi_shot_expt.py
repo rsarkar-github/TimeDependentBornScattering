@@ -20,7 +20,7 @@ if __name__ == "__main__":
         "Nz": 200,
         "Nt": 100,   # this has to be updated later
         "nbl": 75,
-        "Ns": 3,
+        "Ns": 10,
         "Nr": 200,
         "so": 4,
         "to": 2
