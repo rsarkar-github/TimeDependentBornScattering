@@ -106,4 +106,4 @@ if __name__ == "__main__":
     )
 
     # Save results
-    np.savez("Data/" + filestr + ".npz", dm_invert, resid)
+    np.savez("TimeDependentBornScattering/Data/" + filestr + ".npz", dm_invert, resid)
