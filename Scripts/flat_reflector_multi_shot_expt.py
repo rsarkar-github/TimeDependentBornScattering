@@ -10,9 +10,9 @@ configuration['log-level'] = 'WARNING'
 
 if __name__ == "__main__":
 
-    filestr = "point_scatterer_multi_shot"
+    filestr = "flat_reflector_multi_shot"
 
-    # Create params dicts (default grid spacing 10m x 10m)
+    # Create params dicts
     params = {
         "Nx": 300,
         "Nz": 100,
@@ -55,9 +55,9 @@ if __name__ == "__main__":
     # Define a solver object
     solver = AcousticWaveSolver(vel, geometry, space_order=params["so"])
 
-    # Create point perturbation
+    # Create flat reflector
     dm = np.zeros((params["Nt"], params["Nx"], params["Nz"]), dtype=np.float32)
-    dm[:, int(params["Nx"] / 2), int(params["Nz"] / 2)] = 1.0
+    dm[:, int(params["Nx"] * 0.05):int(params["Nx"] * 0.95), int(params["Nz"] / 2)] = 1.0
 
     # Create wrapper for time dependent Born Hessian
     def hessian_wrap(model_pert_in, model_pert_out):

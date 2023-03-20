@@ -302,3 +302,152 @@ def td_born_hessian(model_pert_in, model_pert_out, src_coords, vel, geometry, so
         model_pert_out += \
             u2.data_with_halo[:, offset:nx + offset, offset:nz + offset] * \
             u0.data_with_halo[:, offset:nx + offset, offset:nz + offset]
+
+
+def wave_propagator_forward(data, src_coords, vel, geometry, solver, params):
+    """
+    @Params
+    data: float32 numpy array of size (Ns, Nt, Nr). This will be the output. Assumed to be zeros.
+    src_coords: float32 numpy array of size (Ns, 2) with the source coordinates.
+    vel: velocity model object (The object should be the same type as returned by create_model() function)
+    geometry: geometry object
+    solver: solver object
+    params: python dict of parameters
+
+    Note: The receiver coordinates are not needed since it is assumed that they remain fixed for all sources.
+    So the receiver information should already be available to the solver object.
+    """
+
+    # Get number of sources
+    Ns = params["Ns"]
+
+    # Perform forward modeling
+    for i in range(Ns):
+        # Update source location
+        geometry.src_positions[0, :] = src_coords[i, :]
+
+        # Get forward modeled data for the current shot and update data array appropriately
+        d, _, _ = solver.forward(vp=vel.vp)
+        data[i, :, :] += d.data
+
+
+def born_forward(model_pert, born_data, src_coords, vel, geometry, solver, params):
+    """
+    @Params
+    model_pert: float32 numpy array of size (Nx, Nz)
+    born_data: float32 numpy array of size (Ns, Nt, Nr). This will be the output. Assumed to be zeros.
+    src_coords: float32 numpy array of size (Ns, 2) with the source coordinates.
+    vel: background velocity model object (The object should be the same type as returned by create_model() function)
+    geometry: geometry object
+    solver: solver object
+    params: python dict of parameters
+
+    Note: The receiver coordinates are not needed since it is assumed that they remain fixed for all sources.
+    So the receiver information should already be available to the solver object.
+    """
+
+    # Get params
+    nbl = params["nbl"]
+    nx = params["Nx"]
+    nz = params["Nz"]
+    ns = params["Ns"]
+
+    # Create padded model perturbation
+    model_pert_padded = np.zeros((nx + 2 * nbl, nz + 2 * nbl), dtype=np.float32)
+
+    # Copy model_pert into model_pert_padded appropriately
+    model_pert_padded[nbl:nx + nbl, nbl:nz + nbl] = model_pert
+
+    # Perform Born modeling
+    for i in range(ns):
+        # Update source location
+        geometry.src_positions[0, :] = src_coords[i, :]
+
+        # Get Born modeled data for the current shot and update born_data array appropriately
+        born_d, _, _, _ = solver.born(model_pert_padded, vp=vel.vp)
+        born_data[i, :, :] += born_d.data
+
+
+def born_adjoint(born_data, model_pert, src_coords, vel, geometry, solver, params):
+    """
+    @Params
+    born_data: float32 numpy array of size (Ns, Nt, Nr).
+    model_pert: float32 numpy array of size (Nx, Nz). This will be the output. Assumed to be zeros.
+    src_coords: float32 numpy array of size (Ns, 2) with the source coordinates.
+    vel: background velocity model object (The object should be the same type as returned by create_model() function)
+    geometry: geometry object
+    solver: solver object
+    params: python dict of parameters
+
+    Note: The receiver coordinates are not needed since it is assumed that they remain fixed for all sources.
+    So the receiver information should already be available to the solver object.
+    """
+
+    # Get params
+    nbl = params["nbl"]
+    nx = params["Nx"]
+    nz = params["Nz"]
+    ns = params["Ns"]
+
+    # Perform adjoint Born modeling
+    for i in range(ns):
+        # Update source location
+        geometry.src_positions[0, :] = src_coords[i, :]
+
+        # Peform adjoint Born
+        _, u0, _ = solver.forward(vp=vel.vp, save=True)
+        image, _ = solver.gradient(born_data[i, :, :], u0, vp=vel.vp)
+        model_pert += image.data[nbl:nx + nbl, nbl:nz + nbl]
+
+
+def born_hessian(model_pert_in, model_pert_out, src_coords, vel, geometry, solver, params):
+    """
+    @Params
+    model_pert_in: float32 numpy array of size (Nx, Nz).
+    model_pert_out: float32 numpy array of size (Nx, Nz). This will be the output. Assumed to be zeros.
+    src_coords: float32 numpy array of size (Ns, 2) with the source coordinates.
+    vel: background velocity model object (The object should be the same type as returned by create_model() function)
+    geometry: geometry object
+    solver: solver object
+    params: python dict of parameters
+
+    Note: The receiver coordinates are not needed since it is assumed that they remain fixed for all sources.
+    So the receiver information should already be available to the solver object.
+    """
+
+    # Get params
+    ns = params["Ns"]
+    nr = params["Nr"]
+    nt = params["Nt"]
+
+    # Allocate space for Born modeled data for 1 source
+    born_data = np.zeros((1, nt, nr), dtype=np.float32)
+
+    # New params with 1 shot
+    params1 = params.copy()
+    params1["Ns"] = 1
+
+    for i in range(ns):
+        # Initialize born_data to zeros
+        born_data *= 0
+
+        # Perform Hessian application
+        born_forward(
+            model_pert=model_pert_in,
+            born_data=born_data,
+            src_coords=np.reshape(src_coords[i, :], newshape=(1, 2)),
+            vel=vel,
+            geometry=geometry,
+            solver=solver,
+            params=params1
+        )
+
+        born_adjoint(
+            born_data=born_data,
+            model_pert=model_pert_out,
+            src_coords=np.reshape(src_coords[i, :], newshape=(1, 2)),
+            vel=vel,
+            geometry=geometry,
+            solver=solver,
+            params=params1
+        )
