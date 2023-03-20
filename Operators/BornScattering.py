@@ -2,7 +2,7 @@ import numpy as np
 import numba
 import scipy.ndimage as spim
 import matplotlib.pyplot as plt
-from .Utils import cosine_taper_2d, boxcar_taper_2d, laplacian
+from Utilities.Utils import cosine_taper_2d, boxcar_taper_2d, laplacian
 
 
 # TODO: These codes are not final
