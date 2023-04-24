@@ -148,7 +148,7 @@ def plot_image_xy(
 
 
 def plot_images_grid_xy(
-        image_grid, x0, xn, y0, yn, scale=None, vmin=None, vmax=None, clip=1.0,
+        image_grid, image_titles, x0, xn, y0, yn, scale=None, vmin=None, vmax=None, clip=1.0,
         grid="off", aspect="auto", cmap="Greys", colorbar=True, cbar_size="1%", cbar_pad=0.15,
         xlabel=None, ylabel=None, fontname="Times New Roman", fontsize=15, nxticks=5, nyticks=5,
         savefig_dir=None
@@ -219,6 +219,7 @@ def plot_images_grid_xy(
                 ax.set_ylabel(ylabel, fontname=fontname, fontsize=fontsize)
 
             ax.set_aspect(aspect)
+            ax.set_title(image_titles[i][j], fontname=fontname, fontsize=fontsize)
 
             # Create aligned colorbar on the right
             if colorbar and idx == nrows * ncols - 1:
