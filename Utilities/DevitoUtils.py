@@ -78,8 +78,14 @@ def plot_image(model, source=None, receiver=None, colorbar=True, colormap='jet',
     plt.show()
 
 
-def plot_image_tx(image, x0, xn, t0, tn, scale=None, colorbar=True, clip=1.0, tlabel=None, xlabel=None,
-                  grid="off", aspect="auto", fontname="Times New Roman", fontsize=15):
+def plot_image_tx(
+        image, x0, xn, t0, tn, scale=None,
+        grid="off", aspect="auto", colorbar=True, clip=1.0,
+        tlabel=None,
+        xlabel=None,
+        fontname="Times New Roman", fontsize=15,
+        nxticks=5, ntticks=5
+):
 
     if scale is None:
         scale = np.max(np.abs(image))
@@ -99,6 +105,17 @@ def plot_image_tx(image, x0, xn, t0, tn, scale=None, colorbar=True, clip=1.0, tl
         plt.ylabel('Time (s)', fontname=fontname, fontsize=fontsize)
     else:
         plt.ylabel(tlabel, fontname=fontname, fontsize=fontsize)
+
+    xticks = np.arange(1e-3 * x0, 1e-3 * xn, int(1e-3 * (xn - x0) / nxticks))
+    xticklabels = ["{:4.1f}".format(item) for item in xticks]
+    yticks = np.arange(1e-3 * t0, 1e-3 * tn, int(1e-3 * (tn - t0) / ntticks))
+    yticklabels = ["{:4.1f}".format(item) for item in yticks]
+
+    ax = plt.gca()
+    ax.set_xticks(xticks)
+    ax.set_xticklabels(xticklabels, fontname=fontname, fontsize=fontsize)
+    ax.set_yticks(yticks)
+    ax.set_yticklabels(yticklabels, fontname=fontname, fontsize=fontsize)
 
     # Create aligned colorbar on the right
     if colorbar:
