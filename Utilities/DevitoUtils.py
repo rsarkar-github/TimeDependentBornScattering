@@ -32,14 +32,22 @@ def plot_image(model, source=None, receiver=None, colorbar=True, colormap='jet',
     object. Optionally also includes point markers for sources and receivers.
     Parameters
     ----------
-    model: Velocity object that holds the image.
-    source: Coordinates of the source point.
-    receiver: Coordinates of the receiver points.
-    colorbar: Option to plot the colorbar.
-    colormap: Colormap
-    clip: Controls min / max of color bar (1.0 means full range)
-    fontname: Fontname to use for plots
-    fontsize: Fontsize to use for plots
+    model:
+        Velocity object that holds the image.
+    source:
+        Coordinates of the source point.
+    receiver:
+        Coordinates of the receiver points.
+    colorbar:
+        Option to plot the colorbar.
+    colormap:
+        Colormap
+    clip:
+        Controls min / max of color bar (1.0 means full range)
+    fontname:
+        Fontname to use for plots
+    fontsize:
+        Fontsize to use for plots
     """
     domain_size = 1.e-3 * np.array(model.domain_size)
     extent = [model.origin[0], model.origin[0] + domain_size[0],
@@ -78,15 +86,15 @@ def plot_image(model, source=None, receiver=None, colorbar=True, colormap='jet',
     plt.show()
 
 
-def plot_image_tx(
-        image, x0, xn, t0, tn, scale=None, vmin=None, vmax=None,
+def plot_image_xy(
+        image, x0, xn, y0, yn, scale=None, vmin=None, vmax=None,
         grid="off", aspect="auto", colorbar=True, clip=1.0,
-        tlabel=None,
-        xlabel=None,
+        xlabel=None, ylabel=None,
         fontname="Times New Roman", fontsize=15,
-        nxticks=5, ntticks=5
+        nxticks=5, nyticks=5,
+        savefig_dir=None
 ):
-    extent = [1e-3 * x0, 1e-3 * xn, 1e-3 * tn, 1e-3 * t0]
+    extent = [1e-3 * x0, 1e-3 * xn, 1e-3 * yn, 1e-3 * y0]
 
     if scale is None:
         scale = np.max(np.abs(image))
@@ -105,14 +113,14 @@ def plot_image_tx(
     else:
         plt.xlabel(xlabel, fontname=fontname, fontsize=fontsize)
 
-    if tlabel is None:
+    if ylabel is None:
         plt.ylabel('Time (s)', fontname=fontname, fontsize=fontsize)
     else:
-        plt.ylabel(tlabel, fontname=fontname, fontsize=fontsize)
+        plt.ylabel(ylabel, fontname=fontname, fontsize=fontsize)
 
     xticks = np.arange(1e-3 * x0, 1e-3 * xn, 1e-3 * (xn - x0) / nxticks)
     xticklabels = ["{:4.1f}".format(item) for item in xticks]
-    yticks = np.arange(1e-3 * t0, 1e-3 * tn, 1e-3 * (tn - t0) / ntticks)
+    yticks = np.arange(1e-3 * y0, 1e-3 * yn, 1e-3 * (yn - y0) / nyticks)
     yticklabels = ["{:4.1f}".format(item) for item in yticks]
 
     ax = plt.gca()
@@ -123,10 +131,14 @@ def plot_image_tx(
 
     # Create aligned colorbar on the right
     if colorbar:
-        ax = plt.gca()
         divider = make_axes_locatable(ax)
         cax = divider.append_axes("right", size="5%", pad=0.05)
         plt.colorbar(plot, cax=cax)
+
+    # Save the figure
+    if savefig_dir is not None:
+        plt.savefig(savefig_dir, format="pdf", bbox_inches="tight", pad_inches=0.01)
+
     plt.show()
 
 
