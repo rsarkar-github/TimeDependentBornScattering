@@ -25,7 +25,8 @@ def create_model(shape=(200, 200)):
     )
 
 
-def plot_image(model, source=None, receiver=None, colorbar=True, colormap='jet', clip=1.0):
+def plot_image(model, source=None, receiver=None, colorbar=True, colormap='jet',
+               clip=1.0, fontname="Times New Roman", fontsize=15):
     """
     Plot a two-dimensional velocity field from a seismic `Model`
     object. Optionally also includes point markers for sources and receivers.
@@ -37,6 +38,8 @@ def plot_image(model, source=None, receiver=None, colorbar=True, colormap='jet',
     colorbar: Option to plot the colorbar.
     colormap: Colormap
     clip: Controls min / max of color bar (1.0 means full range)
+    fontname: Fontname to use for plots
+    fontsize: Fontsize to use for plots
     """
     domain_size = 1.e-3 * np.array(model.domain_size)
     extent = [model.origin[0], model.origin[0] + domain_size[0],
@@ -47,8 +50,8 @@ def plot_image(model, source=None, receiver=None, colorbar=True, colormap='jet',
     plot = plt.imshow(np.transpose(field), animated=True, cmap=colormap,
                       vmin=clip * np.min(field), vmax=clip * np.max(field),
                       extent=extent)
-    plt.xlabel('X position (km)', fontname="Times New Roman", fontsize=15)
-    plt.ylabel('Depth (km)', fontname="Times New Roman", fontsize=15)
+    plt.xlabel('X position (km)', fontname=fontname, fontsize=fontsize)
+    plt.ylabel('Depth (km)', fontname=fontname, fontsize=fontsize)
     plt.axis("equal")
 
     # Plot source points, if provided
@@ -75,28 +78,27 @@ def plot_image(model, source=None, receiver=None, colorbar=True, colormap='jet',
     plt.show()
 
 
-def plot_image_tx(image, x0, xn, t0, tn, scale=None, colorbar=True,
-                  clip=1.0, tlabel=None, xlabel=None, grid="off", aspect="auto"):
+def plot_image_tx(image, x0, xn, t0, tn, scale=None, colorbar=True, clip=1.0, tlabel=None, xlabel=None,
+                  grid="off", aspect="auto", fontname="Times New Roman", fontsize=15):
 
     if scale is None:
         scale = np.max(np.abs(image))
     extent = [1e-3 * x0, 1e-3 * xn, 1e-3 * tn, 1e-3 * t0]
 
     plot = plt.imshow(image, aspect=aspect, vmin=-clip * scale, vmax=clip * scale, cmap="Greys", extent=extent)
-    plt.axis("equal")
-    
+
     if grid == "on":
         plt.grid()
 
     if xlabel is None:
-        plt.xlabel('X position (km)', fontname="Times New Roman", fontsize=15)
+        plt.xlabel('X position (km)', fontname=fontname, fontsize=fontsize)
     else:
-        plt.xlabel(xlabel, fontname="Times New Roman", fontsize=15)
+        plt.xlabel(xlabel, fontname=fontname, fontsize=fontsize)
 
     if tlabel is None:
-        plt.ylabel('Time (s)', fontname="Times New Roman", fontsize=15)
+        plt.ylabel('Time (s)', fontname=fontname, fontsize=fontsize)
     else:
-        plt.ylabel(tlabel, fontname="Times New Roman", fontsize=15)
+        plt.ylabel(tlabel, fontname=fontname, fontsize=fontsize)
 
     # Create aligned colorbar on the right
     if colorbar:
