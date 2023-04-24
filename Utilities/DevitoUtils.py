@@ -1,7 +1,8 @@
 from examples.seismic import demo_model
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits.axes_grid1 import make_axes_locatable
+import matplotlib as mpl
+from mpl_toolkits.axes_grid1 import make_axes_locatable, ImageGrid
 import time
 import copy
 
@@ -87,14 +88,17 @@ def plot_image(model, source=None, receiver=None, colorbar=True, colormap='jet',
 
 
 def plot_image_xy(
-        image, x0, xn, y0, yn, scale=None, vmin=None, vmax=None,
-        grid="off", aspect="auto", colorbar=True, clip=1.0,
-        xlabel=None, ylabel=None,
-        fontname="Times New Roman", fontsize=15,
-        nxticks=5, nyticks=5,
+        image, x0, xn, y0, yn, scale=None, vmin=None, vmax=None, clip=1.0,
+        grid="off", aspect="auto", cmap="Greys", colorbar=True, cbar_size="1%", cbar_pad=0.15,
+        xlabel=None, ylabel=None, fontname="Times New Roman", fontsize=15, nxticks=5, nyticks=5,
         savefig_dir=None
 ):
+
     extent = [1e-3 * x0, 1e-3 * xn, 1e-3 * yn, 1e-3 * y0]
+    xticks = np.arange(1e-3 * x0, 1e-3 * xn, 1e-3 * (xn - x0) / nxticks)
+    xticklabels = ["{:4.1f}".format(item) for item in xticks]
+    yticks = np.arange(1e-3 * y0, 1e-3 * yn, 1e-3 * (yn - y0) / nyticks)
+    yticklabels = ["{:4.1f}".format(item) for item in yticks]
 
     if scale is None:
         scale = np.max(np.abs(image))
@@ -103,7 +107,7 @@ def plot_image_xy(
     if vmax is None:
         vmax = scale
 
-    plot = plt.imshow(image, aspect=aspect, vmin=clip * vmin, vmax=clip * vmax, cmap="Greys", extent=extent)
+    plot = plt.imshow(image, aspect=aspect, vmin=clip * vmin, vmax=clip * vmax, cmap=cmap, extent=extent)
 
     if grid == "on":
         plt.grid()
@@ -118,11 +122,6 @@ def plot_image_xy(
     else:
         plt.ylabel(ylabel, fontname=fontname, fontsize=fontsize)
 
-    xticks = np.arange(1e-3 * x0, 1e-3 * xn, 1e-3 * (xn - x0) / nxticks)
-    xticklabels = ["{:4.1f}".format(item) for item in xticks]
-    yticks = np.arange(1e-3 * y0, 1e-3 * yn, 1e-3 * (yn - y0) / nyticks)
-    yticklabels = ["{:4.1f}".format(item) for item in yticks]
-
     ax = plt.gca()
     ax.set_xticks(xticks)
     ax.set_xticklabels(xticklabels, fontname=fontname, fontsize=fontsize)
@@ -132,7 +131,7 @@ def plot_image_xy(
     # Create aligned colorbar on the right
     if colorbar:
         divider = make_axes_locatable(ax)
-        cax = divider.append_axes("right", size="5%", pad=0.05)
+        cax = divider.append_axes("right", size=cbar_size, pad=cbar_pad)
         plt.colorbar(plot, cax=cax)
         for i in cax.yaxis.get_ticklabels():
             i.set_family(fontname)
@@ -143,6 +142,99 @@ def plot_image_xy(
         plt.savefig(savefig_dir, format="pdf", bbox_inches="tight", pad_inches=0.01)
 
     plt.show()
+    if mpl.get_backend() in ["QtAgg", "Qt4Agg"]:
+        mng = plt.get_current_fig_manager()
+        mng.window.showMaximized()
+
+
+def plot_images_grid_xy(
+        image_grid, x0, xn, y0, yn, scale=None, vmin=None, vmax=None, clip=1.0,
+        grid="off", aspect="auto", cmap="Greys", colorbar=True, cbar_size="1%", cbar_pad=0.15,
+        xlabel=None, ylabel=None, fontname="Times New Roman", fontsize=15, nxticks=5, nyticks=5,
+        savefig_dir=None
+):
+    # Get number of rows & cols
+    nrows, ncols, _, _ = image_grid.shape
+
+    # Get axis limits and labels
+    extent = [1e-3 * x0, 1e-3 * xn, 1e-3 * yn, 1e-3 * y0]
+    xticks = np.arange(1e-3 * x0, 1e-3 * xn, 1e-3 * (xn - x0) / nxticks)
+    xticklabels = ["{:4.1f}".format(item) for item in xticks]
+    yticks = np.arange(1e-3 * y0, 1e-3 * yn, 1e-3 * (yn - y0) / nyticks)
+    yticklabels = ["{:4.1f}".format(item) for item in yticks]
+
+    if scale is None:
+        scale = np.max(np.abs(image_grid[0, 0, :, :]))
+    if vmin is None:
+        vmin = -scale
+    if vmax is None:
+        vmax = scale
+
+    if xlabel is None:
+        xlabel = "X position [km]"
+    if ylabel is None:
+        ylabel = "Z position [km]"
+
+    # Create figure and image grid
+    fig = plt.figure(figsize=(30, 10))
+    img_grid = ImageGrid(
+        fig,
+        111,
+        nrows_ncols=(nrows, ncols),
+        axes_pad=0.35,
+        share_all=True,
+        aspect=False,
+        cbar_location="right",
+        cbar_mode="single",
+        cbar_size=cbar_size,
+        cbar_pad=cbar_pad,
+    )
+
+    # Plot images
+    for i in range(nrows):
+        for j in range(ncols):
+
+            idx = i * ncols + j
+            ax = img_grid[idx]
+            im = ax.imshow(
+                np.squeeze(image_grid[i, j, :, :]),
+                aspect=aspect,
+                cmap=cmap,
+                vmin=clip * vmin,
+                vmax=clip * vmax,
+                extent=extent
+            )
+
+            if grid == "on":
+                ax.grid(True, color="white", linestyle="-", linewidth=0.5)
+
+            ax.set_xticks(xticks)
+            if i == nrows - 1:
+                ax.set_xticklabels(xticklabels, fontname=fontname, fontsize=fontsize)
+                ax.set_xlabel(xlabel, fontname=fontname, fontsize=fontsize)
+
+            ax.set_yticks(yticks)
+            if j == 0:
+                ax.set_yticklabels(yticklabels, fontname=fontname, fontsize=fontsize)
+                ax.set_ylabel(ylabel, fontname=fontname, fontsize=fontsize)
+
+            ax.set_aspect(aspect)
+
+            # Create aligned colorbar on the right
+            if colorbar and idx == nrows * ncols - 1:
+                ax.cax.colorbar(im)
+                for i1 in ax.cax.yaxis.get_ticklabels():
+                    i1.set_family(fontname)
+                    i1.set_size(fontsize)
+
+    # Save the figure
+    if savefig_dir is not None:
+        fig.savefig(savefig_dir, format="pdf", bbox_inches="tight", pad_inches=0.01)
+
+    plt.show()
+    if mpl.get_backend() in ["QtAgg", "Qt4Agg"]:
+        mng = plt.get_current_fig_manager()
+        mng.window.showMaximized()
 
 
 def plot_shotrecord(rec, model, t0, tn, colorbar=True, clip=1.0):
