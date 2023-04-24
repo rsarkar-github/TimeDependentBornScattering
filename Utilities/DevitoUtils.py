@@ -47,8 +47,8 @@ def plot_image(model, source=None, receiver=None, colorbar=True, colormap='jet',
     plot = plt.imshow(np.transpose(field), animated=True, cmap=colormap,
                       vmin=clip * np.min(field), vmax=clip * np.max(field),
                       extent=extent)
-    plt.xlabel('X position (km)')
-    plt.ylabel('Depth (km)')
+    plt.xlabel('X position (km)', fontname="Times New Roman", fontsize=15)
+    plt.ylabel('Depth (km)', fontname="Times New Roman", fontsize=15)
 
     # Plot source points, if provided
     if receiver is not None:
@@ -86,14 +86,14 @@ def plot_image_tx(image, x0, xn, t0, tn, scale=None, colorbar=True,
         plt.grid()
 
     if xlabel is None:
-        plt.xlabel('X position (km)')
+        plt.xlabel('X position (km)', fontname="Times New Roman", fontsize=15)
     else:
-        plt.xlabel(xlabel)
+        plt.xlabel(xlabel, fontname="Times New Roman", fontsize=15)
 
     if tlabel is None:
-        plt.ylabel('Time (s)')
+        plt.ylabel('Time (s)', fontname="Times New Roman", fontsize=15)
     else:
-        plt.ylabel(tlabel)
+        plt.ylabel(tlabel, fontname="Times New Roman", fontsize=15)
 
     # Create aligned colorbar on the right
     if colorbar:
