@@ -148,7 +148,7 @@ def plot_image_xy(
 
 
 def plot_images_grid_xy(
-        image_grid, image_titles, x0, xn, y0, yn, scale=None, vmin=None, vmax=None, clip=1.0,
+        image_grid, image_titles, x0, xn, y0, yn, axes_pad=0.35, scale=None, vmin=None, vmax=None, clip=1.0,
         grid="off", aspect="auto", cmap="Greys", colorbar=True, cbar_size="1%", cbar_pad=0.15,
         xlabel=None, ylabel=None, fontname="Times New Roman", fontsize=15, nxticks=5, nyticks=5,
         savefig_dir=None
@@ -181,7 +181,7 @@ def plot_images_grid_xy(
         fig,
         111,
         nrows_ncols=(nrows, ncols),
-        axes_pad=0.35,
+        axes_pad=axes_pad,
         share_all=True,
         aspect=False,
         cbar_location="right",
