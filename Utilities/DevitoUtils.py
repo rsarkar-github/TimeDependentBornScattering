@@ -78,20 +78,24 @@ def plot_image(model, source=None, receiver=None, colorbar=True, colormap='jet',
     plt.show()
 
 
-def plot_image_tx(
-        image, x0, xn, t0, tn, scale=None,
+def plot_image_tx1(
+        image, x0, xn, t0, tn, scale=None, vmin=None, vmax=None,
         grid="off", aspect="auto", colorbar=True, clip=1.0,
         tlabel=None,
         xlabel=None,
         fontname="Times New Roman", fontsize=15,
         nxticks=5, ntticks=5
 ):
+    extent = [1e-3 * x0, 1e-3 * xn, 1e-3 * tn, 1e-3 * t0]
 
     if scale is None:
         scale = np.max(np.abs(image))
-    extent = [1e-3 * x0, 1e-3 * xn, 1e-3 * tn, 1e-3 * t0]
+    if vmin is None:
+        vmin = -scale
+    if vmax is None:
+        vmax = scale
 
-    plot = plt.imshow(image, aspect=aspect, vmin=-clip * scale, vmax=clip * scale, cmap="Greys", extent=extent)
+    plot = plt.imshow(image, aspect=aspect, vmin=clip * vmin, vmax=clip * vmax, cmap="Greys", extent=extent)
 
     if grid == "on":
         plt.grid()
@@ -106,9 +110,9 @@ def plot_image_tx(
     else:
         plt.ylabel(tlabel, fontname=fontname, fontsize=fontsize)
 
-    xticks = np.arange(1e-3 * x0, 1e-3 * xn, int(1e-3 * (xn - x0) / nxticks))
+    xticks = np.arange(1e-3 * x0, 1e-3 * xn, 1e-3 * (xn - x0) / nxticks)
     xticklabels = ["{:4.1f}".format(item) for item in xticks]
-    yticks = np.arange(1e-3 * t0, 1e-3 * tn, int(1e-3 * (tn - t0) / ntticks))
+    yticks = np.arange(1e-3 * t0, 1e-3 * tn, 1e-3 * (tn - t0) / ntticks)
     yticklabels = ["{:4.1f}".format(item) for item in yticks]
 
     ax = plt.gca()
