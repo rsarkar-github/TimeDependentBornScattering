@@ -134,6 +134,7 @@ def plot_image_xy(
         divider = make_axes_locatable(ax)
         cax = divider.append_axes("right", size="5%", pad=0.05)
         plt.colorbar(plot, cax=cax)
+        cax.tick_params(labelsize=fontsize)
 
     # Save the figure
     if savefig_dir is not None:
