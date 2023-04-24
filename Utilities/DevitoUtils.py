@@ -91,7 +91,7 @@ def plot_image_xy(
         image, x0, xn, y0, yn, scale=None, vmin=None, vmax=None, clip=1.0,
         grid="off", aspect="auto", cmap="Greys", colorbar=True, cbar_size="1%", cbar_pad=0.15,
         xlabel=None, ylabel=None, fontname="Times New Roman", fontsize=15, nxticks=5, nyticks=5,
-        savefig_dir=None
+        savefig_fname=None
 ):
 
     extent = [1e-3 * x0, 1e-3 * xn, 1e-3 * yn, 1e-3 * y0]
@@ -138,8 +138,8 @@ def plot_image_xy(
             i.set_size(fontsize)
 
     # Save the figure
-    if savefig_dir is not None:
-        plt.savefig(savefig_dir, format="pdf", bbox_inches="tight", pad_inches=0.01)
+    if savefig_fname is not None:
+        plt.savefig(savefig_fname, format="pdf", bbox_inches="tight", pad_inches=0.01)
 
     plt.show()
     if mpl.get_backend() in ["QtAgg", "Qt4Agg"]:
@@ -151,7 +151,7 @@ def plot_images_grid_xy(
         image_grid, image_titles, x0, xn, y0, yn, axes_pad=0.35, scale=None, vmin=None, vmax=None, clip=1.0,
         grid="off", aspect="auto", cmap="Greys", colorbar=True, cbar_size="1%", cbar_pad=0.15,
         xlabel=None, ylabel=None, fontname="Times New Roman", fontsize=15, nxticks=5, nyticks=5,
-        savefig_dir=None
+        savefig_fname=None
 ):
     # Get number of rows & cols
     nrows, ncols, _, _ = image_grid.shape
@@ -229,8 +229,8 @@ def plot_images_grid_xy(
                     i1.set_size(fontsize)
 
     # Save the figure
-    if savefig_dir is not None:
-        fig.savefig(savefig_dir, format="pdf", bbox_inches="tight", pad_inches=0.01)
+    if savefig_fname is not None:
+        fig.savefig(savefig_fname, format="pdf", bbox_inches="tight", pad_inches=0.01)
 
     plt.show()
     if mpl.get_backend() in ["QtAgg", "Qt4Agg"]:
