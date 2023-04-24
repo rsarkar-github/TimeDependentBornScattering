@@ -78,7 +78,7 @@ def plot_image(model, source=None, receiver=None, colorbar=True, colormap='jet',
     plt.show()
 
 
-def plot_image_tx1(
+def plot_image_tx(
         image, x0, xn, t0, tn, scale=None, vmin=None, vmax=None,
         grid="off", aspect="auto", colorbar=True, clip=1.0,
         tlabel=None,
