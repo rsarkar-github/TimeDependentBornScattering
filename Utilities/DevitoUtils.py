@@ -49,6 +49,7 @@ def plot_image(model, source=None, receiver=None, colorbar=True, colormap='jet',
                       extent=extent)
     plt.xlabel('X position (km)', fontname="Times New Roman", fontsize=15)
     plt.ylabel('Depth (km)', fontname="Times New Roman", fontsize=15)
+    plt.axis("equal")
 
     # Plot source points, if provided
     if receiver is not None:
@@ -82,6 +83,8 @@ def plot_image_tx(image, x0, xn, t0, tn, scale=None, colorbar=True,
     extent = [1e-3 * x0, 1e-3 * xn, 1e-3 * tn, 1e-3 * t0]
 
     plot = plt.imshow(image, aspect=aspect, vmin=-clip * scale, vmax=clip * scale, cmap="Greys", extent=extent)
+    plt.axis("equal")
+    
     if grid == "on":
         plt.grid()
 
