@@ -85,6 +85,7 @@ def plot_image(model, source=None, receiver=None, colorbar=True, colormap='jet',
         cbar = plt.colorbar(plot, cax=cax)
         cbar.set_label('Field')
     plt.show()
+    plt.close()
 
 
 def plot_image_xy(
@@ -150,6 +151,7 @@ def plot_image_xy(
     if mpl.get_backend() in ["QtAgg", "Qt4Agg"]:
         mng = plt.get_current_fig_manager()
         mng.window.showMaximized()
+    plt.close()
 
 
 def plot_images_grid_xy(
@@ -241,6 +243,7 @@ def plot_images_grid_xy(
     if mpl.get_backend() in ["QtAgg", "Qt4Agg"]:
         mng = plt.get_current_fig_manager()
         mng.window.showMaximized()
+    plt.close()
 
 
 def plot_shotrecord(rec, model, t0, tn, colorbar=True, clip=1.0):
@@ -276,6 +279,7 @@ def plot_shotrecord(rec, model, t0, tn, colorbar=True, clip=1.0):
         cax = divider.append_axes("right", size="5%", pad=0.05)
         plt.colorbar(plot, cax=cax)
     plt.show()
+    plt.close()
 
 
 def conjugate_gradient(linear_operator, rhs, x0=None, niter=5, c=0, printobj=False):

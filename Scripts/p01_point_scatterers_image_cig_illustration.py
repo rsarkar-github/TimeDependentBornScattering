@@ -100,8 +100,8 @@ if __name__ == "__main__":
             ax.set_aspect(0.05)
 
             plt.savefig(savefig_fname, format="pdf", bbox_inches="tight", pad_inches=0.01)
-
             plt.show()
+            plt.close()
 
         plot_ricker(savefig_fname=figdir + filestr + "_wavelet.pdf")
 
@@ -347,7 +347,7 @@ if __name__ == "__main__":
 
     print("Starting \'single source offset\' experiment...")
     t1 = time.time()
-    single_source_offset()
+    #single_source_offset()
     t2 = time.time()
     print("Time taken = ", "{:4.2f}".format((t2 - t1)), " s.\n")
 
@@ -488,7 +488,7 @@ if __name__ == "__main__":
 
     print("Starting \'multi source 10\' experiment...")
     t1 = time.time()
-    multi_source_10()
+    #multi_source_10()
     t2 = time.time()
     print("Time taken = ", "{:4.2f}".format((t2 - t1)), " s.\n")
 
@@ -633,6 +633,6 @@ if __name__ == "__main__":
 
     print("Starting \'multi source all\' experiment...")
     t1 = time.time()
-    multi_source_all()
+    #multi_source_all()
     t2 = time.time()
     print("Time taken = ", "{:4.2f}".format((t2 - t1)), " s.\n")
