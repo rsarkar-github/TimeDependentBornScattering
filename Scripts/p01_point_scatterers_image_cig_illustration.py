@@ -92,6 +92,9 @@ if __name__ == "__main__":
             ax.set_xticklabels(xticklabels, fontname="STIXGeneral", fontsize=12)
             ax.set_yticks(yticks)
             ax.set_yticklabels(yticklabels, fontname="STIXGeneral", fontsize=12)
+            ax.set_xlabel("Time [s]", fontname="STIXGeneral", fontsize=12)
+            ax.set_ylabel("Amplitude", fontname="STIXGeneral", fontsize=12)
+            ax.set_aspect(0.05)
 
             plt.savefig(savefig_fname, format="pdf", bbox_inches="tight", pad_inches=0.01)
 
