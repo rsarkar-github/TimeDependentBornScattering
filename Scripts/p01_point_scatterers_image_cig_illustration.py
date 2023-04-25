@@ -198,7 +198,7 @@ if __name__ == "__main__":
             x0=t0, xn=tn,
             y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
             scale=dm_scale, clip=1.0, colorbar=False,
-            ylabel="Z [km]", xlabel="Time [s]",
+            ylabel="Z [km]", xlabel="Time [s]", xticklabels_fmt="{:4.2f}",
             grid="on", aspect=cig_aspect,
             fontname="STIXGeneral", fontsize=12,
             savefig_fname=figdir + filestr + "_cig.pdf"
@@ -339,7 +339,7 @@ if __name__ == "__main__":
             x0=t0, xn=tn,
             y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
             scale=dm_scale, clip=1.0, colorbar=False,
-            ylabel="Z [km]", xlabel="Time [s]",
+            ylabel="Z [km]", xlabel="Time [s]", xticklabels_fmt="{:4.2f}",
             grid="on", aspect=cig_aspect,
             fontname="STIXGeneral", fontsize=12,
             savefig_fname=figdir + filestr + "_cig.pdf"
@@ -347,7 +347,7 @@ if __name__ == "__main__":
 
     print("Starting \'single source offset\' experiment...")
     t1 = time.time()
-    #single_source_offset()
+    single_source_offset()
     t2 = time.time()
     print("Time taken = ", "{:4.2f}".format((t2 - t1)), " s.\n")
 
@@ -480,7 +480,7 @@ if __name__ == "__main__":
             x0=t0, xn=tn,
             y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
             scale=dm_scale, clip=1.0, colorbar=False,
-            ylabel="Z [km]", xlabel="Time [s]",
+            ylabel="Z [km]", xlabel="Time [s]", xticklabels_fmt="{:4.2f}",
             grid="on", aspect=cig_aspect,
             fontname="STIXGeneral", fontsize=12,
             savefig_fname=figdir + filestr + "_cig.pdf"
@@ -488,7 +488,7 @@ if __name__ == "__main__":
 
     print("Starting \'multi source 10\' experiment...")
     t1 = time.time()
-    #multi_source_10()
+    multi_source_10()
     t2 = time.time()
     print("Time taken = ", "{:4.2f}".format((t2 - t1)), " s.\n")
 
@@ -624,7 +624,7 @@ if __name__ == "__main__":
             x0=t0, xn=tn,
             y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
             scale=dm_scale, clip=1.0, colorbar=False,
-            ylabel="Z [km]", xlabel="Time [s]",
+            ylabel="Z [km]", xlabel="Time [s]", xticklabels_fmt="{:4.2f}",
             grid="on", aspect=cig_aspect,
             fontname="STIXGeneral", fontsize=12,
             draw_line_coords=draw_line_coords, linewidth=0.5, linestyle="-", linecolor="red",
@@ -633,6 +633,6 @@ if __name__ == "__main__":
 
     print("Starting \'multi source all\' experiment...")
     t1 = time.time()
-    #multi_source_all()
+    multi_source_all()
     t2 = time.time()
     print("Time taken = ", "{:4.2f}".format((t2 - t1)), " s.\n")

@@ -91,16 +91,17 @@ def plot_image(model, source=None, receiver=None, colorbar=True, colormap='jet',
 def plot_image_xy(
         image, x0, xn, y0, yn, scale=None, vmin=None, vmax=None, sfac=1.0, clip=1.0,
         grid="off", aspect="auto", cmap="Greys", colorbar=True, cbar_size="1%", cbar_pad=0.15,
-        xlabel=None, ylabel=None, fontname="Times New Roman", fontsize=15, nxticks=5, nyticks=5,
+        xlabel=None, ylabel=None, fontname="Times New Roman", fontsize=15,
+        nxticks=5, nyticks=5, xticklabels_fmt="{:4.1f}", yticklabels_fmt="{:4.1f}",
         draw_line_coords=None, linewidth=1, linestyle="-", linecolor="red",
         savefig_fname=None
 ):
 
     extent = [1e-3 * x0, 1e-3 * xn, 1e-3 * yn, 1e-3 * y0]
     xticks = np.arange(1e-3 * x0, 1e-3 * xn, 1e-3 * (xn - x0) / nxticks)
-    xticklabels = ["{:4.1f}".format(item) for item in xticks]
+    xticklabels = [xticklabels_fmt.format(item) for item in xticks]
     yticks = np.arange(1e-3 * y0, 1e-3 * yn, 1e-3 * (yn - y0) / nyticks)
-    yticklabels = ["{:4.1f}".format(item) for item in yticks]
+    yticklabels = [yticklabels_fmt.format(item) for item in yticks]
 
     if scale is None:
         scale = np.max(np.abs(image)) * sfac
@@ -157,7 +158,8 @@ def plot_image_xy(
 def plot_images_grid_xy(
         image_grid, image_titles, x0, xn, y0, yn, axes_pad=0.35, scale=None, vmin=None, vmax=None, sfac=1.0, clip=1.0,
         grid="off", aspect="auto", cmap="Greys", colorbar=True, cbar_size="1%", cbar_pad=0.15,
-        xlabel=None, ylabel=None, fontname="Times New Roman", fontsize=15, nxticks=5, nyticks=5,
+        xlabel=None, ylabel=None, fontname="Times New Roman", fontsize=15,
+        nxticks=5, nyticks=5, xticklabels_fmt="{:4.1f}", yticklabels_fmt="{:4.1f}",
         savefig_fname=None
 ):
     # Get number of rows & cols
@@ -166,9 +168,9 @@ def plot_images_grid_xy(
     # Get axis limits and labels
     extent = [1e-3 * x0, 1e-3 * xn, 1e-3 * yn, 1e-3 * y0]
     xticks = np.arange(1e-3 * x0, 1e-3 * xn, 1e-3 * (xn - x0) / nxticks)
-    xticklabels = ["{:4.1f}".format(item) for item in xticks]
+    xticklabels = [xticklabels_fmt.format(item) for item in xticks]
     yticks = np.arange(1e-3 * y0, 1e-3 * yn, 1e-3 * (yn - y0) / nyticks)
-    yticklabels = ["{:4.1f}".format(item) for item in yticks]
+    yticklabels = [yticklabels_fmt.format(item) for item in yticks]
 
     if scale is None:
         scale = np.max(np.abs(image_grid[0, 0, :, :])) * sfac
