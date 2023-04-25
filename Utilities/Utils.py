@@ -14,8 +14,7 @@ def ricker_time(freq_peak: float = 10.0, nt: int = 250, dt: float = 0.004, delay
         y: Ricker wavelet series as a 1D numpy array of size (nt,)
     """
     t = np.arange(0.0, nt * dt, dt, dtype=np.float32)
-    y = (1.0 - 2.0 * (np.pi ** 2) * (freq_peak ** 2) * ((t - delay) ** 2)) \
-        * np.exp(-(np.pi ** 2) * (freq_peak ** 2) * ((t - delay) ** 2))
+    y = 1.0 - 2.0 * ((np.pi * freq_peak * (t - delay)) ** 2) * np.exp(-(np.pi * freq_peak * (t - delay)) ** 2)
     return t, y
 
 

@@ -1,8 +1,10 @@
 import numpy as np
 import scipy as sp
 import time
+import matplotlib.pyplot as plt
 from ..Operators import DevitoOperators
 from ..Utilities.DevitoUtils import create_model, plot_image_xy, plot_images_grid_xy
+from ..Utilities.Utils import ricker_time
 from examples.seismic.acoustic import AcousticWaveSolver
 from examples.seismic import AcquisitionGeometry
 from devito import configuration
@@ -70,6 +72,33 @@ if __name__ == "__main__":
         params["Nt"] = geometry.nt
         del src_dummy
 
+        # Plot wavelet
+        def plot_ricker(savefig_fname):
+
+            nt = 250
+            dt = 0.001
+            fpeak = f0 * 1000
+            ricker_t, ricker_vals = ricker_time(freq_peak=fpeak, nt=nt, dt=dt, delay=1.0 / fpeak)
+
+            plt.plot(ricker_t, ricker_vals, 'k-')
+
+            ax = plt.gca()
+            xticks = np.arange(0, nt * dt, nt * dt / 5)
+            xticklabels = ["{:4.1f}".format(item) for item in xticks]
+            yticks = ax.get_yticks()
+            yticklabels = ["{:4.1f}".format(item) for item in yticks]
+
+            ax.set_xticks(xticks)
+            ax.set_xticklabels(xticklabels, fontname="STIXGeneral", fontsize=12)
+            ax.set_yticks(yticks)
+            ax.set_yticklabels(yticklabels, fontname="STIXGeneral", fontsize=12)
+
+            plt.savefig(savefig_fname, format="pdf", bbox_inches="tight", pad_inches=0.01)
+
+            plt.show()
+
+        plot_ricker(savefig_fname="/Fig/" + filestr + "_wavelet.pdf")
+
         # Define a solver object
         solver = AcousticWaveSolver(vel, geometry, space_order=params["so"])
 
@@ -80,7 +109,7 @@ if __name__ == "__main__":
         temp[int(params["Nx"] / 2), int(params["Nz"] * 0.4)] = 1.0
         temp[int(params["Nx"] / 2), int(params["Nz"] * 0.6)] = 1.0
         temp[int(params["Nx"] / 2), int(params["Nz"] * 0.8)] = 1.0
-        temp = sp.ndimage.gaussian_filter(input=temp, sigma=1, mode="nearest")
+        temp = sp.ndimage.gaussian_filter(input=temp, sigma=0.5, mode="nearest")
         for i in range(params["Nt"]):
             dm[i, :, :] = temp
 
@@ -233,7 +262,7 @@ if __name__ == "__main__":
         temp[int(params["Nx"] / 2), int(params["Nz"] * 0.4)] = 1.0
         temp[int(params["Nx"] / 2), int(params["Nz"] * 0.6)] = 1.0
         temp[int(params["Nx"] / 2), int(params["Nz"] * 0.8)] = 1.0
-        temp = sp.ndimage.gaussian_filter(input=temp, sigma=1, mode="nearest")
+        temp = sp.ndimage.gaussian_filter(input=temp, sigma=0.5, mode="nearest")
         for i in range(params["Nt"]):
             dm[i, :, :] = temp
 
@@ -374,7 +403,7 @@ if __name__ == "__main__":
         temp[int(params["Nx"] / 2), int(params["Nz"] * 0.4)] = 1.0
         temp[int(params["Nx"] / 2), int(params["Nz"] * 0.6)] = 1.0
         temp[int(params["Nx"] / 2), int(params["Nz"] * 0.8)] = 1.0
-        temp = sp.ndimage.gaussian_filter(input=temp, sigma=1, mode="nearest")
+        temp = sp.ndimage.gaussian_filter(input=temp, sigma=0.5, mode="nearest")
         for i in range(params["Nt"]):
             dm[i, :, :] = temp
 
@@ -515,7 +544,7 @@ if __name__ == "__main__":
         temp[int(params["Nx"] / 2), int(params["Nz"] * 0.4)] = 1.0
         temp[int(params["Nx"] / 2), int(params["Nz"] * 0.6)] = 1.0
         temp[int(params["Nx"] / 2), int(params["Nz"] * 0.8)] = 1.0
-        temp = sp.ndimage.gaussian_filter(input=temp, sigma=1, mode="nearest")
+        temp = sp.ndimage.gaussian_filter(input=temp, sigma=0.5, mode="nearest")
         for i in range(params["Nt"]):
             dm[i, :, :] = temp
 
@@ -581,6 +610,9 @@ if __name__ == "__main__":
 
         # Plot CIG at middle of horizontal grid
         cig = dm_image[:, int(params["Nx"] / 2), :].T
+        draw_line_coords = [[0, 0], [0, 1e-3 * (vel.origin[1] + vel.domain_size[1])]]
+        draw_line_coords[0][0] = draw_line_coords[1][0] / 2.0 + 1e-3 / f0
+        draw_line_coords[0][1] = draw_line_coords[1][1] / 2.0 + 1e-3 / f0
         plot_image_xy(
             cig,
             x0=t0, xn=tn,
@@ -589,6 +621,7 @@ if __name__ == "__main__":
             ylabel="Z [km]", xlabel="Time [s]",
             grid="on", aspect=cig_aspect,
             fontname="STIXGeneral", fontsize=12,
+            draw_line_coords=draw_line_coords, linewidth=0.5, linestyle="-", linecolor="red",
             savefig_fname="/Fig/" + filestr + "_cig.pdf"
         )
 

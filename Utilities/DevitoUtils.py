@@ -91,7 +91,7 @@ def plot_image_xy(
         image, x0, xn, y0, yn, scale=None, vmin=None, vmax=None, sfac=1.0, clip=1.0,
         grid="off", aspect="auto", cmap="Greys", colorbar=True, cbar_size="1%", cbar_pad=0.15,
         xlabel=None, ylabel=None, fontname="Times New Roman", fontsize=15, nxticks=5, nyticks=5,
-        draw_line_coords=None, linewidth="1", linestyle="-", linecolor="red",
+        draw_line_coords=None, linewidth=1, linestyle="-", linecolor="red",
         savefig_fname=None
 ):
 
