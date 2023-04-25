@@ -24,6 +24,9 @@ if __name__ == "__main__":
     - Receivers placed at every grid point at top of model, depth 20 m
     """
 
+    basepath = "TimeDependentBornScattering/"
+    figdir = basepath + "Fig/"
+
     # -----------------------------------------------------------------------------
     # Single source placed at center
     def single_source_center():
@@ -100,7 +103,7 @@ if __name__ == "__main__":
 
             plt.show()
 
-        plot_ricker(savefig_fname="/Fig/" + filestr + "_wavelet.pdf")
+        plot_ricker(savefig_fname=figdir + filestr + "_wavelet.pdf")
 
         # Define a solver object
         solver = AcousticWaveSolver(vel, geometry, space_order=params["so"])
@@ -128,7 +131,7 @@ if __name__ == "__main__":
             ylabel="Z [km]", xlabel="X [km]",
             grid="off", aspect="equal",
             fontname="STIXGeneral", fontsize=12,
-            savefig_fname="/Fig/" + filestr + "_model_pert.pdf"
+            savefig_fname=figdir + filestr + "_model_pert.pdf"
         )
 
         # Perform Born modeling and generate data
@@ -164,7 +167,7 @@ if __name__ == "__main__":
             ylabel="Z [km]", xlabel="X [km]",
             grid="on", aspect="equal",
             fontname="STIXGeneral", fontsize=12,
-            savefig_fname="/Fig/" + filestr + "_stacked_image.pdf"
+            savefig_fname=figdir + filestr + "_stacked_image.pdf"
         )
 
         # Plot imaged data (t-x sections at depth values 20%, 40%, 60%, 80%)
@@ -185,7 +188,7 @@ if __name__ == "__main__":
             xlabel="X [km]", ylabel="Time [s]",
             fontname="STIXGeneral", fontsize=20,
             nxticks=5, nyticks=5,
-            savefig_fname="/Fig/" + filestr + "_adjoint_tx_images.pdf"
+            savefig_fname=figdir + filestr + "_adjoint_tx_images.pdf"
         )
 
         # Plot CIG at middle of horizontal grid
@@ -198,7 +201,7 @@ if __name__ == "__main__":
             ylabel="Z [km]", xlabel="Time [s]",
             grid="on", aspect=cig_aspect,
             fontname="STIXGeneral", fontsize=12,
-            savefig_fname="/Fig/" + filestr + "_cig.pdf"
+            savefig_fname=figdir + filestr + "_cig.pdf"
         )
 
     print("Starting \'single source center\' experiment...")
@@ -305,7 +308,7 @@ if __name__ == "__main__":
             ylabel="Z [km]", xlabel="X [km]",
             grid="on", aspect="equal",
             fontname="STIXGeneral", fontsize=12,
-            savefig_fname="/Fig/" + filestr + "_stacked_image.pdf"
+            savefig_fname=figdir + filestr + "_stacked_image.pdf"
         )
 
         # Plot imaged data (t-x sections at depth values 20%, 40%, 60%, 80%)
@@ -326,7 +329,7 @@ if __name__ == "__main__":
             xlabel="X [km]", ylabel="Time [s]",
             fontname="STIXGeneral", fontsize=20,
             nxticks=5, nyticks=5,
-            savefig_fname="/Fig/" + filestr + "_adjoint_tx_images.pdf"
+            savefig_fname=figdir + filestr + "_adjoint_tx_images.pdf"
         )
 
         # Plot CIG at middle of horizontal grid
@@ -339,7 +342,7 @@ if __name__ == "__main__":
             ylabel="Z [km]", xlabel="Time [s]",
             grid="on", aspect=cig_aspect,
             fontname="STIXGeneral", fontsize=12,
-            savefig_fname="/Fig/" + filestr + "_cig.pdf"
+            savefig_fname=figdir + filestr + "_cig.pdf"
         )
 
     print("Starting \'single source offset\' experiment...")
@@ -446,7 +449,7 @@ if __name__ == "__main__":
             ylabel="Z [km]", xlabel="X [km]",
             grid="on", aspect="equal",
             fontname="STIXGeneral", fontsize=12,
-            savefig_fname="/Fig/" + filestr + "_stacked_image.pdf"
+            savefig_fname=figdir + filestr + "_stacked_image.pdf"
         )
 
         # Plot imaged data (t-x sections at depth values 20%, 40%, 60%, 80%)
@@ -467,7 +470,7 @@ if __name__ == "__main__":
             xlabel="X [km]", ylabel="Time [s]",
             fontname="STIXGeneral", fontsize=20,
             nxticks=5, nyticks=5,
-            savefig_fname="/Fig/" + filestr + "_adjoint_tx_images.pdf"
+            savefig_fname=figdir + filestr + "_adjoint_tx_images.pdf"
         )
 
         # Plot CIG at middle of horizontal grid
@@ -480,7 +483,7 @@ if __name__ == "__main__":
             ylabel="Z [km]", xlabel="Time [s]",
             grid="on", aspect=cig_aspect,
             fontname="STIXGeneral", fontsize=12,
-            savefig_fname="/Fig/" + filestr + "_cig.pdf"
+            savefig_fname=figdir + filestr + "_cig.pdf"
         )
 
     print("Starting \'multi source 10\' experiment...")
@@ -587,7 +590,7 @@ if __name__ == "__main__":
             ylabel="Z [km]", xlabel="X [km]",
             grid="on", aspect="equal",
             fontname="STIXGeneral", fontsize=12,
-            savefig_fname="/Fig/" + filestr + "_stacked_image.pdf"
+            savefig_fname=figdir + filestr + "_stacked_image.pdf"
         )
 
         # Plot imaged data (t-x sections at depth values 20%, 40%, 60%, 80%)
@@ -608,7 +611,7 @@ if __name__ == "__main__":
             xlabel="X [km]", ylabel="Time [s]",
             fontname="STIXGeneral", fontsize=20,
             nxticks=5, nyticks=5,
-            savefig_fname="/Fig/" + filestr + "_adjoint_tx_images.pdf"
+            savefig_fname=figdir + filestr + "_adjoint_tx_images.pdf"
         )
 
         # Plot CIG at middle of horizontal grid
@@ -625,7 +628,7 @@ if __name__ == "__main__":
             grid="on", aspect=cig_aspect,
             fontname="STIXGeneral", fontsize=12,
             draw_line_coords=draw_line_coords, linewidth=0.5, linestyle="-", linecolor="red",
-            savefig_fname="/Fig/" + filestr + "_cig.pdf"
+            savefig_fname=figdir + filestr + "_cig.pdf"
         )
 
     print("Starting \'multi source all\' experiment...")
