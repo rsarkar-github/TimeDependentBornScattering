@@ -91,6 +91,7 @@ def plot_image_xy(
         image, x0, xn, y0, yn, scale=None, vmin=None, vmax=None, sfac=1.0, clip=1.0,
         grid="off", aspect="auto", cmap="Greys", colorbar=True, cbar_size="1%", cbar_pad=0.15,
         xlabel=None, ylabel=None, fontname="Times New Roman", fontsize=15, nxticks=5, nyticks=5,
+        draw_line_coords=None, linewidth="1", linestyle="-", linecolor="red",
         savefig_fname=None
 ):
 
@@ -127,6 +128,10 @@ def plot_image_xy(
     ax.set_xticklabels(xticklabels, fontname=fontname, fontsize=fontsize)
     ax.set_yticks(yticks)
     ax.set_yticklabels(yticklabels, fontname=fontname, fontsize=fontsize)
+
+    # Optionally draw line
+    if draw_line_coords is not None:
+        plt.plot(draw_line_coords[0], draw_line_coords[1], color=linecolor, linewidth=linewidth, linestyle=linestyle)
 
     # Create aligned colorbar on the right
     if colorbar:
