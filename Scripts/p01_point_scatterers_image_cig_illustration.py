@@ -27,6 +27,7 @@ if __name__ == "__main__":
     def single_source_center():
 
         filestr = "p01_point_scatterers_single_source_center"
+        cig_aspect = 3.0
 
         # Create params dicts
         params = {
@@ -46,7 +47,7 @@ if __name__ == "__main__":
 
         # Simulation time, wavelet
         t0 = 0.
-        tn = 2000.  # Simulation last 2 second (2000 ms)
+        tn = 1200.  # Simulation last 2 second (2000 ms)
         f0 = 0.015  # Source peak frequency is 15Hz (0.015 kHz)
 
         # Reflection acquisition geometry (sources and receivers are equally spaced in X direction)
@@ -91,11 +92,11 @@ if __name__ == "__main__":
             dm[100, :, :].T,
             x0=vel.origin[0], xn=vel.origin[0] + vel.domain_size[0],
             y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
-            scale=dm_scale, clip=1.0, colorbar=False,
+            scale=dm_scale / 10, clip=1.0, colorbar=True,
             ylabel="Z [km]", xlabel="X [km]",
             grid="off", aspect="equal",
             fontname="STIXGeneral", fontsize=12,
-            savefig_fname="/Fig/" + filestr + "_modelpert.pdf"
+            savefig_fname="/Fig/" + filestr + "_model_pert.pdf"
         )
 
         # Perform Born modeling and generate data
@@ -122,6 +123,18 @@ if __name__ == "__main__":
             params=params
         )
 
+        # Plot stacked image
+        plot_image_xy(
+            np.sum(dm_image, axis=0).T,
+            x0=vel.origin[0], xn=vel.origin[0] + vel.domain_size[0],
+            y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
+            scale=None, clip=1.0, colorbar=False,
+            ylabel="Z [km]", xlabel="X [km]",
+            grid="on", aspect="equal",
+            fontname="STIXGeneral", fontsize=12,
+            savefig_fname="/Fig/" + filestr + "_stacked_image.pdf"
+        )
+
         # Plot imaged data (t-x sections at depth values 20%, 40%, 60%, 80%)
         image_nrows = 2
         image_ncols = 2
@@ -140,7 +153,20 @@ if __name__ == "__main__":
             xlabel="X [km]", ylabel="Time [s]",
             fontname="STIXGeneral", fontsize=20,
             nxticks=5, nyticks=5,
-            savefig_fname="/Fig/" + filestr + "_adjoint_images.pdf"
+            savefig_fname="/Fig/" + filestr + "_adjoint_tx_images.pdf"
+        )
+
+        # Plot CIG at middle of horizontal grid
+        cig = dm_image[:, int(params["Nx"] / 2), :].T
+        plot_image_xy(
+            cig,
+            x0=t0, xn=tn,
+            y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
+            scale=dm_scale, clip=1.0, colorbar=False,
+            ylabel="Z [km]", xlabel="Time [s]",
+            grid="on", aspect=cig_aspect,
+            fontname="STIXGeneral", fontsize=12,
+            savefig_fname="/Fig/" + filestr + "_cig.pdf"
         )
 
     print("Starting \'single source center\' experiment...")
@@ -154,6 +180,7 @@ if __name__ == "__main__":
     def single_source_offset():
 
         filestr = "p01_point_scatterers_single_source_offset"
+        cig_aspect = 3.0
 
         # Create params dicts
         params = {
@@ -173,7 +200,7 @@ if __name__ == "__main__":
 
         # Simulation time, wavelet
         t0 = 0.
-        tn = 2000.  # Simulation last 2 second (2000 ms)
+        tn = 1200.  # Simulation last 2 second (2000 ms)
         f0 = 0.015  # Source peak frequency is 15Hz (0.015 kHz)
 
         # Reflection acquisition geometry (sources and receivers are equally spaced in X direction)
@@ -237,6 +264,18 @@ if __name__ == "__main__":
             params=params
         )
 
+        # Plot stacked image
+        plot_image_xy(
+            np.sum(dm_image, axis=0).T,
+            x0=vel.origin[0], xn=vel.origin[0] + vel.domain_size[0],
+            y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
+            scale=None, clip=1.0, colorbar=False,
+            ylabel="Z [km]", xlabel="X [km]",
+            grid="on", aspect="equal",
+            fontname="STIXGeneral", fontsize=12,
+            savefig_fname="/Fig/" + filestr + "_stacked_image.pdf"
+        )
+
         # Plot imaged data (t-x sections at depth values 20%, 40%, 60%, 80%)
         image_nrows = 2
         image_ncols = 2
@@ -255,7 +294,20 @@ if __name__ == "__main__":
             xlabel="X [km]", ylabel="Time [s]",
             fontname="STIXGeneral", fontsize=20,
             nxticks=5, nyticks=5,
-            savefig_fname="/Fig/" + filestr + "_adjoint_images.pdf"
+            savefig_fname="/Fig/" + filestr + "_adjoint_tx_images.pdf"
+        )
+
+        # Plot CIG at middle of horizontal grid
+        cig = dm_image[:, int(params["Nx"] / 2), :].T
+        plot_image_xy(
+            cig,
+            x0=t0, xn=tn,
+            y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
+            scale=dm_scale, clip=1.0, colorbar=False,
+            ylabel="Z [km]", xlabel="Time [s]",
+            grid="on", aspect=cig_aspect,
+            fontname="STIXGeneral", fontsize=12,
+            savefig_fname="/Fig/" + filestr + "_cig.pdf"
         )
 
     print("Starting \'single source offset\' experiment...")
@@ -269,6 +321,7 @@ if __name__ == "__main__":
     def multi_source_10():
 
         filestr = "p01_point_scatterers_multi_source_10"
+        cig_aspect = 3.0
 
         # Create params dicts
         params = {
@@ -288,7 +341,7 @@ if __name__ == "__main__":
 
         # Simulation time, wavelet
         t0 = 0.
-        tn = 2000.  # Simulation last 2 second (2000 ms)
+        tn = 1200.  # Simulation last 2 second (2000 ms)
         f0 = 0.015  # Source peak frequency is 15Hz (0.015 kHz)
 
         # Reflection acquisition geometry (sources and receivers are equally spaced in X direction)
@@ -352,6 +405,18 @@ if __name__ == "__main__":
             params=params
         )
 
+        # Plot stacked image
+        plot_image_xy(
+            np.sum(dm_image, axis=0).T,
+            x0=vel.origin[0], xn=vel.origin[0] + vel.domain_size[0],
+            y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
+            scale=None, clip=1.0, colorbar=False,
+            ylabel="Z [km]", xlabel="X [km]",
+            grid="on", aspect="equal",
+            fontname="STIXGeneral", fontsize=12,
+            savefig_fname="/Fig/" + filestr + "_stacked_image.pdf"
+        )
+
         # Plot imaged data (t-x sections at depth values 20%, 40%, 60%, 80%)
         image_nrows = 2
         image_ncols = 2
@@ -370,7 +435,20 @@ if __name__ == "__main__":
             xlabel="X [km]", ylabel="Time [s]",
             fontname="STIXGeneral", fontsize=20,
             nxticks=5, nyticks=5,
-            savefig_fname="/Fig/" + filestr + "_adjoint_images.pdf"
+            savefig_fname="/Fig/" + filestr + "_adjoint_tx_images.pdf"
+        )
+
+        # Plot CIG at middle of horizontal grid
+        cig = dm_image[:, int(params["Nx"] / 2), :].T
+        plot_image_xy(
+            cig,
+            x0=t0, xn=tn,
+            y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
+            scale=dm_scale, clip=1.0, colorbar=False,
+            ylabel="Z [km]", xlabel="Time [s]",
+            grid="on", aspect=cig_aspect,
+            fontname="STIXGeneral", fontsize=12,
+            savefig_fname="/Fig/" + filestr + "_cig.pdf"
         )
 
     print("Starting \'multi source 10\' experiment...")
@@ -384,6 +462,7 @@ if __name__ == "__main__":
     def multi_source_all():
 
         filestr = "p01_point_scatterers_multi_source_all"
+        cig_aspect = 3.0
 
         # Create params dicts
         params = {
@@ -403,7 +482,7 @@ if __name__ == "__main__":
 
         # Simulation time, wavelet
         t0 = 0.
-        tn = 2000.  # Simulation last 2 second (2000 ms)
+        tn = 1200.  # Simulation last 2 second (2000 ms)
         f0 = 0.015  # Source peak frequency is 15Hz (0.015 kHz)
 
         # Reflection acquisition geometry (sources and receivers are equally spaced in X direction)
@@ -467,6 +546,18 @@ if __name__ == "__main__":
             params=params
         )
 
+        # Plot stacked image
+        plot_image_xy(
+            np.sum(dm_image, axis=0).T,
+            x0=vel.origin[0], xn=vel.origin[0] + vel.domain_size[0],
+            y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
+            scale=None, clip=1.0, colorbar=False,
+            ylabel="Z [km]", xlabel="X [km]",
+            grid="on", aspect="equal",
+            fontname="STIXGeneral", fontsize=12,
+            savefig_fname="/Fig/" + filestr + "_stacked_image.pdf"
+        )
+
         # Plot imaged data (t-x sections at depth values 20%, 40%, 60%, 80%)
         image_nrows = 2
         image_ncols = 2
@@ -485,7 +576,20 @@ if __name__ == "__main__":
             xlabel="X [km]", ylabel="Time [s]",
             fontname="STIXGeneral", fontsize=20,
             nxticks=5, nyticks=5,
-            savefig_fname="/Fig/" + filestr + "_adjoint_images.pdf"
+            savefig_fname="/Fig/" + filestr + "_adjoint_tx_images.pdf"
+        )
+
+        # Plot CIG at middle of horizontal grid
+        cig = dm_image[:, int(params["Nx"] / 2), :].T
+        plot_image_xy(
+            cig,
+            x0=t0, xn=tn,
+            y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
+            scale=dm_scale, clip=1.0, colorbar=False,
+            ylabel="Z [km]", xlabel="Time [s]",
+            grid="on", aspect=cig_aspect,
+            fontname="STIXGeneral", fontsize=12,
+            savefig_fname="/Fig/" + filestr + "_cig.pdf"
         )
 
     print("Starting \'multi source all\' experiment...")

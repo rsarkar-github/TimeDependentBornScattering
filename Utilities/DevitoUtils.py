@@ -88,7 +88,7 @@ def plot_image(model, source=None, receiver=None, colorbar=True, colormap='jet',
 
 
 def plot_image_xy(
-        image, x0, xn, y0, yn, scale=None, vmin=None, vmax=None, clip=1.0,
+        image, x0, xn, y0, yn, scale=None, vmin=None, vmax=None, sfac=1.0, clip=1.0,
         grid="off", aspect="auto", cmap="Greys", colorbar=True, cbar_size="1%", cbar_pad=0.15,
         xlabel=None, ylabel=None, fontname="Times New Roman", fontsize=15, nxticks=5, nyticks=5,
         savefig_fname=None
@@ -101,7 +101,7 @@ def plot_image_xy(
     yticklabels = ["{:4.1f}".format(item) for item in yticks]
 
     if scale is None:
-        scale = np.max(np.abs(image))
+        scale = np.max(np.abs(image)) * sfac
     if vmin is None:
         vmin = -scale
     if vmax is None:
@@ -148,7 +148,7 @@ def plot_image_xy(
 
 
 def plot_images_grid_xy(
-        image_grid, image_titles, x0, xn, y0, yn, axes_pad=0.35, scale=None, vmin=None, vmax=None, clip=1.0,
+        image_grid, image_titles, x0, xn, y0, yn, axes_pad=0.35, scale=None, vmin=None, vmax=None, sfac=1.0, clip=1.0,
         grid="off", aspect="auto", cmap="Greys", colorbar=True, cbar_size="1%", cbar_pad=0.15,
         xlabel=None, ylabel=None, fontname="Times New Roman", fontsize=15, nxticks=5, nyticks=5,
         savefig_fname=None
@@ -164,7 +164,7 @@ def plot_images_grid_xy(
     yticklabels = ["{:4.1f}".format(item) for item in yticks]
 
     if scale is None:
-        scale = np.max(np.abs(image_grid[0, 0, :, :]))
+        scale = np.max(np.abs(image_grid[0, 0, :, :])) * sfac
     if vmin is None:
         vmin = -scale
     if vmax is None:
