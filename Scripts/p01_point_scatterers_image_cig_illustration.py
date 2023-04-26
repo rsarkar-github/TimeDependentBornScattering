@@ -84,6 +84,7 @@ if __name__ == "__main__":
             ricker_t, ricker_vals = ricker_time(freq_peak=fpeak, nt=nt, dt=dt, delay=1.0 / fpeak)
 
             plt.plot(ricker_t, ricker_vals, 'k-')
+            plt.grid("on")
 
             ax = plt.gca()
             xticks = np.arange(0, nt * dt, nt * dt / 5)
@@ -129,7 +130,7 @@ if __name__ == "__main__":
             y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
             scale=dm_scale / 10, clip=1.0, colorbar=True,
             ylabel="Z [km]", xlabel="X [km]",
-            grid="off", aspect="equal",
+            grid="on", aspect="equal",
             fontname="STIXGeneral", fontsize=12,
             savefig_fname=figdir + filestr + "_model_pert.pdf"
         )
