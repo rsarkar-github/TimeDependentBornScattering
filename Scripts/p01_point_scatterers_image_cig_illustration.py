@@ -180,7 +180,7 @@ if __name__ == "__main__":
         image_arr[1, 0, :, :] = dm_image[:, :, int(params["Nz"] * 0.6)]
         image_arr[1, 1, :, :] = dm_image[:, :, int(params["Nz"] * 0.8)]
 
-        image_titles = [["Depth = 0.2 km", "Depth = 0.4 km"], ["Depth = 0.6 km", "Depth = 0.8 km"]]
+        image_titles = [["Z = 0.2 km", "Z = 0.4 km"], ["Z = 0.6 km", "Z = 0.8 km"]]
 
         plot_images_grid_xy(
             image_grid=image_arr, image_titles=image_titles, axes_pad=0.5,
@@ -321,7 +321,7 @@ if __name__ == "__main__":
         image_arr[1, 0, :, :] = dm_image[:, :, int(params["Nz"] * 0.6)]
         image_arr[1, 1, :, :] = dm_image[:, :, int(params["Nz"] * 0.8)]
 
-        image_titles = [["Depth = 0.2 km", "Depth = 0.4 km"], ["Depth = 0.6 km", "Depth = 0.8 km"]]
+        image_titles = [["Z = 0.2 km", "Z = 0.4 km"], ["Z = 0.6 km", "Z = 0.8 km"]]
 
         plot_images_grid_xy(
             image_grid=image_arr, image_titles=image_titles, axes_pad=0.5,
@@ -462,7 +462,7 @@ if __name__ == "__main__":
         image_arr[1, 0, :, :] = dm_image[:, :, int(params["Nz"] * 0.6)]
         image_arr[1, 1, :, :] = dm_image[:, :, int(params["Nz"] * 0.8)]
 
-        image_titles = [["Depth = 0.2 km", "Depth = 0.4 km"], ["Depth = 0.6 km", "Depth = 0.8 km"]]
+        image_titles = [["Z = 0.2 km", "Z = 0.4 km"], ["Z = 0.6 km", "Z = 0.8 km"]]
 
         plot_images_grid_xy(
             image_grid=image_arr, image_titles=image_titles, axes_pad=0.5,
@@ -603,7 +603,7 @@ if __name__ == "__main__":
         image_arr[1, 0, :, :] = dm_image[:, :, int(params["Nz"] * 0.6)]
         image_arr[1, 1, :, :] = dm_image[:, :, int(params["Nz"] * 0.8)]
 
-        image_titles = [["Depth = 0.2 km", "Depth = 0.4 km"], ["Depth = 0.6 km", "Depth = 0.8 km"]]
+        image_titles = [["Z = 0.2 km", "Z = 0.4 km"], ["Z = 0.6 km", "Z = 0.8 km"]]
 
         plot_images_grid_xy(
             image_grid=image_arr, image_titles=image_titles, axes_pad=0.5,
