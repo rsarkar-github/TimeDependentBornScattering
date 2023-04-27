@@ -88,9 +88,9 @@ if __name__ == "__main__":
 
             ax = plt.gca()
             xticks = np.arange(0, nt * dt, nt * dt / 5)
-            xticklabels = ["{:4.1f}".format(item) for item in xticks]
+            xticklabels = ["{:4.2f}".format(item) for item in xticks]
             yticks = ax.get_yticks()
-            yticklabels = ["{:4.2f}".format(item) for item in yticks]
+            yticklabels = ["{:4.1f}".format(item) for item in yticks]
 
             ax.set_xticks(xticks)
             ax.set_xticklabels(xticklabels, fontname="STIXGeneral", fontsize=12)
