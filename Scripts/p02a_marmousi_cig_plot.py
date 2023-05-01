@@ -39,11 +39,12 @@ def marmousi_cig_plot(scale_fac, figdir, datadir, nx, nz, cig_aspect, thread_num
 
     # Plot CIG at middle of horizontal grid
     locs = [0.3, 0.4, 0.5, 0.6, 0.7]
+
     for item in locs:
-        cig = dm_image[:, int(params["Nx"] * item), :].T
+        cig = dm_image[0:int(dm_image.shape[0] / 2), int(params["Nx"] * item), :].T
         plot_image_xy(
             cig,
-            x0=t0, xn=tn,
+            x0=t0, xn=tn/2,
             y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
             scale=dm_scale, clip=1.0, colorbar=False,
             ylabel="Z [km]", xlabel="Time [s]", xticklabels_fmt="{:4.2f}",
@@ -53,7 +54,7 @@ def marmousi_cig_plot(scale_fac, figdir, datadir, nx, nz, cig_aspect, thread_num
         )
         plot_image_xy(
             sp.ndimage.laplace(cig, mode="nearest"),
-            x0=t0, xn=tn,
+            x0=t0, xn=tn/2,
             y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
             scale=dm_scale / 5, clip=1.0, colorbar=False,
             ylabel="Z [km]", xlabel="Time [s]", xticklabels_fmt="{:4.2f}",
@@ -73,7 +74,7 @@ if __name__ == "__main__":
     # Load Marmousi model
     nx = 500
     nz = 174
-    cig_aspect = 1.0
+    cig_aspect = 2.0
 
     nthreads = 3
     arglist = [
