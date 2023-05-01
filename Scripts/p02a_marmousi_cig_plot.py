@@ -49,6 +49,16 @@ def marmousi_cig_plot(scale_fac, figdir, datadir, nx, nz, cig_aspect, thread_num
         fontname="STIXGeneral", fontsize=12,
         savefig_fname=figdir + filestr + "_cig.pdf"
     )
+    plot_image_xy(
+        sp.ndimage.laplace(cig, mode="nearest"),
+        x0=t0, xn=tn,
+        y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
+        scale=dm_scale, clip=1.0, colorbar=False,
+        ylabel="Z [km]", xlabel="Time [s]", xticklabels_fmt="{:4.2f}",
+        grid="on", aspect=cig_aspect,
+        fontname="STIXGeneral", fontsize=12,
+        savefig_fname=figdir + filestr + "_cig_filt.pdf"
+    )
     print("Task finished on thread ", thread_num)
 
 
