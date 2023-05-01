@@ -96,10 +96,10 @@ if __name__ == "__main__":
     dm = vp - vp_smooth
 
     plot_image_xy(
-        vp_smooth,
+        vp_smooth.T,
         x0=vel.origin[0], xn=vel.origin[0] + vel.domain_size[0],
         y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
-        scale=None, clip=1.0, colorbar=True, cmap="jet",
+        scale=None, vmin=1.5, vmax=4.5, clip=1.0, colorbar=True, cmap="jet",
         ylabel="Z [km]", xlabel="X [km]",
         grid="on", aspect="equal",
         fontname="STIXGeneral", fontsize=12,
@@ -107,7 +107,7 @@ if __name__ == "__main__":
     )
 
     plot_image_xy(
-        dm,
+        dm.T,
         x0=vel.origin[0], xn=vel.origin[0] + vel.domain_size[0],
         y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
         scale=0.2, clip=1.0, colorbar=True, cmap="Greys",
