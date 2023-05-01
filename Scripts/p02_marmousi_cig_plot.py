@@ -11,9 +11,8 @@ from devito import configuration
 configuration['log-level'] = 'WARNING'
 
 
-def marmousi_cig(scale_fac, figdir, datadir, nx, nz, vp, cig_aspect, thread_num):
+def marmousi_cig_plot(scale_fac, figdir, datadir, nx, nz, vp, cig_aspect, thread_num):
 
-    t1 = time.time()
     print("Task starting on thread ", thread_num)
 
     filestr = "p02_marmousi_scalefac_" + "{:4.2f}".format(scale_fac)
@@ -96,17 +95,8 @@ def marmousi_cig(scale_fac, figdir, datadir, nx, nz, vp, cig_aspect, thread_num)
     vel1.vp.data[:, :] = vp_pad_smooth * scale_fac
 
     # Image the data
-    dm_image = np.zeros((params["Nt"], params["Nx"], params["Nz"]), dtype=np.float32)
+    dm_image = np.load(datadir + filestr + "_cig.npz")
     dm_scale = 50.0
-    DevitoOperators.td_born_adjoint(
-        born_data=td_born_data_true,
-        model_pert=dm_image,
-        src_coords=src_coord,
-        vel=vel1,
-        geometry=geometry,
-        solver=solver,
-        params=params
-    )
 
     # Plot CIG at middle of horizontal grid
     cig = dm_image[:, int(params["Nx"] / 2), :].T
@@ -122,9 +112,7 @@ def marmousi_cig(scale_fac, figdir, datadir, nx, nz, vp, cig_aspect, thread_num)
     )
 
     np.savez(datadir + filestr + "_cig.npz", dm_image)
-
-    t2 = time.time()
-    print("Task finished on thread ", thread_num, ". Total time elapsed = ", "{:4.2f}".format(t2 - t1), " s.")
+    print("Task finished on thread ", thread_num, ".)
 
 
 if __name__ == "__main__":
@@ -149,4 +137,4 @@ if __name__ == "__main__":
     ]
 
     pool = mp.Pool(min(nthreads, mp.cpu_count()))
-    pool.starmap(marmousi_cig, arglist)
+    pool.starmap(marmousi_cig_plot, arglist)
