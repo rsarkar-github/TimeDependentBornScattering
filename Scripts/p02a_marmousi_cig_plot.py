@@ -38,27 +38,29 @@ def marmousi_cig_plot(scale_fac, figdir, datadir, nx, nz, cig_aspect, thread_num
     dm_scale = 5.0
 
     # Plot CIG at middle of horizontal grid
-    cig = dm_image[:, int(params["Nx"] / 2), :].T
-    plot_image_xy(
-        cig,
-        x0=t0, xn=tn,
-        y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
-        scale=dm_scale, clip=1.0, colorbar=False,
-        ylabel="Z [km]", xlabel="Time [s]", xticklabels_fmt="{:4.2f}",
-        grid="on", aspect=cig_aspect,
-        fontname="STIXGeneral", fontsize=12,
-        savefig_fname=figdir + filestr + "_cig.pdf"
-    )
-    plot_image_xy(
-        sp.ndimage.laplace(cig, mode="nearest"),
-        x0=t0, xn=tn,
-        y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
-        scale=dm_scale, clip=1.0, colorbar=False,
-        ylabel="Z [km]", xlabel="Time [s]", xticklabels_fmt="{:4.2f}",
-        grid="on", aspect=cig_aspect,
-        fontname="STIXGeneral", fontsize=12,
-        savefig_fname=figdir + filestr + "_cig_filt.pdf"
-    )
+    locs = [0.3, 0.4, 0.5, 0.6, 0.7]
+    for item in locs:
+        cig = dm_image[:, int(params["Nx"] * item), :].T
+        plot_image_xy(
+            cig,
+            x0=t0, xn=tn,
+            y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
+            scale=dm_scale, clip=1.0, colorbar=False,
+            ylabel="Z [km]", xlabel="Time [s]", xticklabels_fmt="{:4.2f}",
+            grid="on", aspect=cig_aspect,
+            fontname="STIXGeneral", fontsize=12,
+            savefig_fname=figdir + filestr + "_loc_" + "{:4.2f}".format(item) + "_cig.pdf"
+        )
+        plot_image_xy(
+            sp.ndimage.laplace(cig, mode="nearest"),
+            x0=t0, xn=tn,
+            y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
+            scale=dm_scale / 5, clip=1.0, colorbar=False,
+            ylabel="Z [km]", xlabel="Time [s]", xticklabels_fmt="{:4.2f}",
+            grid="on", aspect=cig_aspect,
+            fontname="STIXGeneral", fontsize=12,
+            savefig_fname=figdir + filestr + "_loc_" + "{:4.2f}".format(item) + "_cig_filt.pdf"
+        )
     print("Task finished on thread ", thread_num)
 
 
