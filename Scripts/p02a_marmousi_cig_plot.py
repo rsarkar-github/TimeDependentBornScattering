@@ -35,7 +35,7 @@ def marmousi_cig_plot(scale_fac, figdir, datadir, nx, nz, cig_aspect, thread_num
 
     # Image the data
     dm_image = np.load(datadir + filestr + "_cig.npz")["arr_0"]
-    dm_scale = 50.0
+    dm_scale = 5.0
 
     # Plot CIG at middle of horizontal grid
     cig = dm_image[:, int(params["Nx"] / 2), :].T
