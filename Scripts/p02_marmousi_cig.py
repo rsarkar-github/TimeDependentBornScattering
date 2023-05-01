@@ -107,20 +107,6 @@ def marmousi_cig(scale_fac, figdir, datadir, nx, nz, vp, cig_aspect, thread_num)
         solver=solver,
         params=params
     )
-
-    # Plot CIG at middle of horizontal grid
-    cig = dm_image[:, int(params["Nx"] / 2), :].T
-    plot_image_xy(
-        cig,
-        x0=t0, xn=tn,
-        y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
-        scale=dm_scale, clip=1.0, colorbar=False,
-        ylabel="Z [km]", xlabel="Time [s]", xticklabels_fmt="{:4.2f}",
-        grid="on", aspect=cig_aspect,
-        fontname="STIXGeneral", fontsize=12,
-        savefig_fname=figdir + filestr + "_cig.pdf"
-    )
-
     np.savez(datadir + filestr + "_cig.npz", dm_image)
 
     t2 = time.time()
@@ -144,8 +130,8 @@ if __name__ == "__main__":
     nthreads = 3
     arglist = [
         (1.0, _figdir, _datadir, _nx, _nz, _vp, _cig_aspect, 0),
-        (0.95, _figdir, _datadir, _nx, _nz, _vp, _cig_aspect, 1),
-        (1.05, _figdir, _datadir, _nx, _nz, _vp, _cig_aspect, 2)
+        (0.97, _figdir, _datadir, _nx, _nz, _vp, _cig_aspect, 1),
+        (1.03, _figdir, _datadir, _nx, _nz, _vp, _cig_aspect, 2)
     ]
 
     pool = mp.Pool(min(nthreads, mp.cpu_count()))
