@@ -43,7 +43,7 @@ def marmousi_cig_plot(scale_fac, figdir, datadir, nx, nz, cig_aspect, thread_num
             dm_image_stack.T,
             x0=vel.origin[0], xn=vel.origin[0] + vel.domain_size[0],
             y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
-            scale=None, sfac=0.3, clip=1.0, colorbar=False,
+            scale=None, sfac=0.1, clip=1.0, colorbar=False,
             ylabel="Z [km]", xlabel="X [km]",
             grid="on", aspect="equal",
             fontname="STIXGeneral", fontsize=12,
