@@ -45,8 +45,8 @@ def marmousi_cig_plot(scale_fac, figdir, datadir, nx, nz, cig_aspect, thread_num
         for item in locs:
             draw_line_coords.append(
                 [
-                    [vel.domain_size[0] * item, vel.domain_size[0] * item],
-                    [vel.origin[1], vel.origin[1] + vel.domain_size[1]]
+                    [1e-3 * vel.domain_size[0] * item, 1e-3 * vel.domain_size[0] * item],
+                    [1e-3 * vel.origin[1], 1e-3 * (vel.origin[1] + vel.domain_size[1])]
                 ]
             )
 
