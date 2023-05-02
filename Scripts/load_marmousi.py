@@ -30,6 +30,18 @@ if __name__ == "__main__":
     with np.load("TimeDependentBornScattering/Data/marmousi-vp.npz") as data:
         vp = data["arr_0"]
 
+    # Compute water bottom (answer is 22)
+    for i in range(nx):
+        val = vp[i, 0]
+        k = 0
+        for j in range(nz):
+            if vp[i, j] != val:
+                print(k)
+                continue
+            else:
+                k += 1
+
+
     # Plot Marmousi-2 vp-model
     # ------------------------
 

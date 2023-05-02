@@ -41,7 +41,12 @@ def marmousi_cig_plot(scale_fac, figdir, datadir, nx, nz, cig_aspect, thread_num
     locs = [0.3, 0.4, 0.5, 0.6, 0.7]
 
     for item in locs:
+        
         cig = dm_image[0:int(dm_image.shape[0] / 2), int(params["Nx"] * item), :].T
+
+        # Apply WB mute (sample 22)
+        cig[0:22, :] = 0
+
         plot_image_xy(
             cig,
             x0=t0, xn=tn/2,
