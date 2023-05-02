@@ -2,10 +2,6 @@ import numpy as np
 import scipy as sp
 import multiprocessing as mp
 from ..Utilities.DevitoUtils import create_model, plot_image_xy
-from ..Utilities.Utils import extrapolate_same
-from examples.seismic import AcquisitionGeometry
-from devito import configuration
-configuration['log-level'] = 'WARNING'
 
 
 def marmousi_cig_plot(scale_fac, figdir, datadir, nx, nz, cig_aspect, thread_num):
@@ -36,6 +32,22 @@ def marmousi_cig_plot(scale_fac, figdir, datadir, nx, nz, cig_aspect, thread_num
     # Image the data
     dm_image = np.load(datadir + filestr + "_cig.npz")["arr_0"]
     dm_scale = 5.0
+
+    # Form stacked image
+    if scale_fac == 1.0:
+        dm_image_stack = np.sum(dm_image, axis=0)
+        dm_image_stack = sp.ndimage.laplace(dm_image_stack, mode="nearest")
+
+        plot_image_xy(
+            dm_image_stack.T,
+            x0=vel.origin[0], xn=vel.origin[0] + vel.domain_size[0],
+            y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
+            scale=None, sfac=0.3, clip=1.0, colorbar=False,
+            ylabel="Z [km]", xlabel="X [km]",
+            grid="on", aspect="equal",
+            fontname="STIXGeneral", fontsize=12,
+            savefig_fname=figdir + filestr + "_stacked_image.pdf"
+        )
 
     # Plot CIG at middle of horizontal grid
     locs = [0.3, 0.4, 0.5, 0.6, 0.7]
