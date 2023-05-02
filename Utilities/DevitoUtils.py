@@ -133,7 +133,8 @@ def plot_image_xy(
 
     # Optionally draw line
     if draw_line_coords is not None:
-        plt.plot(draw_line_coords[0], draw_line_coords[1], color=linecolor, linewidth=linewidth, linestyle=linestyle)
+        for item in draw_line_coords:
+            plt.plot(item[0], item[1], color=linecolor, linewidth=linewidth, linestyle=linestyle)
 
     # Create aligned colorbar on the right
     if colorbar:

@@ -617,9 +617,9 @@ if __name__ == "__main__":
 
         # Plot CIG at middle of horizontal grid
         cig = dm_image[:, int(params["Nx"] / 2), :].T
-        draw_line_coords = [[0, 0], [0, 1e-3 * (vel.origin[1] + vel.domain_size[1])]]
-        draw_line_coords[0][0] = draw_line_coords[1][0] / 2.0 + 1e-3 / f0
-        draw_line_coords[0][1] = draw_line_coords[1][1] / 2.0 + 1e-3 / f0
+        draw_line_coords = [[[0, 0], [0, 1e-3 * (vel.origin[1] + vel.domain_size[1])]]]
+        draw_line_coords[0][0][0] = draw_line_coords[0][1][0] / 2.0 + 1e-3 / f0
+        draw_line_coords[0][0][1] = draw_line_coords[0][1][1] / 2.0 + 1e-3 / f0
         plot_image_xy(
             cig,
             x0=t0, xn=tn,

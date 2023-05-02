@@ -33,11 +33,22 @@ def marmousi_cig_plot(scale_fac, figdir, datadir, nx, nz, cig_aspect, thread_num
     dm_image = np.load(datadir + filestr + "_cig.npz")["arr_0"]
     dm_scale = 5.0
 
+    # Locations for CIGs
+    locs = [0.3, 0.4, 0.5, 0.6, 0.7]
+
     # Form stacked image
     if scale_fac == 1.0:
         dm_image_stack = np.sum(dm_image, axis=0)
         dm_image_stack = sp.ndimage.laplace(dm_image_stack, mode="nearest")
         dm_image_stack[:, 0:18] = 0  # Water bottom mute
+        draw_line_coords = []
+        for item in locs:
+            draw_line_coords.append(
+                [
+                    [vel.domain_size[0] * item, vel.domain_size[0] * item],
+                    [vel.origin[1], vel.origin[1] + vel.domain_size[1]]
+                ]
+            )
 
         plot_image_xy(
             dm_image_stack.T,
@@ -46,12 +57,10 @@ def marmousi_cig_plot(scale_fac, figdir, datadir, nx, nz, cig_aspect, thread_num
             scale=None, sfac=0.1, clip=1.0, colorbar=False,
             ylabel="Z [km]", xlabel="X [km]",
             grid="on", aspect="equal",
+            draw_line_coords=draw_line_coords, linewidth=1.0, linestyle="-", linecolor="red",
             fontname="STIXGeneral", fontsize=12,
             savefig_fname=figdir + filestr + "_stacked_image.pdf"
         )
-
-    # Plot CIG at middle of horizontal grid
-    locs = [0.3, 0.4, 0.5, 0.6, 0.7]
 
     for item in locs:
 
