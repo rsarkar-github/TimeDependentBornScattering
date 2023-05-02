@@ -37,6 +37,7 @@ def marmousi_cig_plot(scale_fac, figdir, datadir, nx, nz, cig_aspect, thread_num
     if scale_fac == 1.0:
         dm_image_stack = np.sum(dm_image, axis=0)
         dm_image_stack = sp.ndimage.laplace(dm_image_stack, mode="nearest")
+        dm_image_stack[:, 0:18] = 0  # Water bottom mute
 
         plot_image_xy(
             dm_image_stack.T,
@@ -56,7 +57,7 @@ def marmousi_cig_plot(scale_fac, figdir, datadir, nx, nz, cig_aspect, thread_num
 
         cig = dm_image[0:int(dm_image.shape[0] / 2), int(params["Nx"] * item), :].T
 
-        # Apply WB mute (sample 22)
+        # Apply Water Bottom mute (WB at sample 22)
         cig[0:18, :] = 0
 
         plot_image_xy(
