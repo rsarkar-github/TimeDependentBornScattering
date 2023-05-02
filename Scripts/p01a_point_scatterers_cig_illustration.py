@@ -156,7 +156,7 @@ if __name__ == "__main__":
     t2 = time.time()
     print("Time taken = ", "{:4.2f}".format((t2 - t1)), " s.\n")
 
-    print("Starting \'multi source all\' experiment 3...")
+    print("Starting \'multi source all\' experiment 4...")
     t1 = time.time()
     multi_source_all(scale_fac=0.98)
     t2 = time.time()
