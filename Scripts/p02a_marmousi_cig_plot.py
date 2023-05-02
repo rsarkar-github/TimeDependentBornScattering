@@ -79,8 +79,8 @@ if __name__ == "__main__":
     nthreads = 3
     arglist = [
         (1.0, figdir, datadir, nx, nz, cig_aspect, 0),
-        (0.95, figdir, datadir, nx, nz, cig_aspect, 1),
-        (1.05, figdir, datadir, nx, nz, cig_aspect, 2)
+        (0.97, figdir, datadir, nx, nz, cig_aspect, 1),
+        (1.03, figdir, datadir, nx, nz, cig_aspect, 2)
     ]
 
     pool = mp.Pool(min(nthreads, mp.cpu_count()))
