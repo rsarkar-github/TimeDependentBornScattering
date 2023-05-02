@@ -50,6 +50,9 @@ if __name__ == "__main__":
         vel = create_model(shape=(params["Nx"], params["Nz"]))
         vel.vp.data[:, :] = 2.0
 
+        vel0 = create_model(shape=(params["Nx"], params["Nz"]))
+        vel0.vp.data[:, :] = 2.0 * 1.1
+
         # Simulation time, wavelet
         t0 = 0.
         tn = 1200.  # Simulation last 2 second (2000 ms)
@@ -71,12 +74,12 @@ if __name__ == "__main__":
         src_dummy = np.empty((1, 2))
 
         src_dummy[0, :] = src_coord[int(src_coord.shape[0] / 2), :]
-        geometry = AcquisitionGeometry(vel, rec_coord, src_dummy, t0, tn, f0=f0, src_type='Ricker')
+        geometry = AcquisitionGeometry(vel0, rec_coord, src_dummy, t0, tn, f0=f0, src_type='Ricker')
         params["Nt"] = geometry.nt
         del src_dummy
 
         # Define a solver object
-        solver = AcousticWaveSolver(vel, geometry, space_order=params["so"])
+        solver = AcousticWaveSolver(vel0, geometry, space_order=params["so"])
 
         # Create point scatterers
         dm = np.zeros((params["Nt"], params["Nx"], params["Nz"]), dtype=np.float32)
@@ -137,18 +140,18 @@ if __name__ == "__main__":
 
     print("Starting \'multi source all\' experiment 1...")
     t1 = time.time()
-    multi_source_all(scale_fac=1.01)
+    multi_source_all(scale_fac=1.05)
     t2 = time.time()
     print("Time taken = ", "{:4.2f}".format((t2 - t1)), " s.\n")
 
     print("Starting \'multi source all\' experiment 2...")
     t1 = time.time()
-    multi_source_all(scale_fac=1.0)
+    multi_source_all(scale_fac=1.00)
     t2 = time.time()
     print("Time taken = ", "{:4.2f}".format((t2 - t1)), " s.\n")
 
     print("Starting \'multi source all\' experiment 3...")
     t1 = time.time()
-    multi_source_all(scale_fac=0.99)
+    multi_source_all(scale_fac=0.95)
     t2 = time.time()
     print("Time taken = ", "{:4.2f}".format((t2 - t1)), " s.\n")
