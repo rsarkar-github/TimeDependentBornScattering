@@ -134,20 +134,22 @@ if __name__ == "__main__":
             savefig_fname=figdir + filestr + "_" + "{:4.2f}".format(scale_fac) + "_cig.pdf"
         )
 
+
     print("Starting \'multi source all\' experiment 1...")
     t1 = time.time()
-    multi_source_all(scale_fac=1.0)
+    multi_source_all(scale_fac=1.02)
     t2 = time.time()
     print("Time taken = ", "{:4.2f}".format((t2 - t1)), " s.\n")
 
     print("Starting \'multi source all\' experiment 2...")
     t1 = time.time()
-    multi_source_all(scale_fac=0.97)
+    multi_source_all(scale_fac=1.0)
     t2 = time.time()
     print("Time taken = ", "{:4.2f}".format((t2 - t1)), " s.\n")
 
     print("Starting \'multi source all\' experiment 3...")
     t1 = time.time()
-    multi_source_all(scale_fac=1.03)
+    multi_source_all(scale_fac=0.98)
     t2 = time.time()
     print("Time taken = ", "{:4.2f}".format((t2 - t1)), " s.\n")
+
