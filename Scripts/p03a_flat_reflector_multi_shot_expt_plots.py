@@ -103,7 +103,7 @@ if __name__ == "__main__":
         dm[100, :, :].T,
         x0=vel.origin[0], xn=vel.origin[0] + vel.domain_size[0],
         y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
-        scale=None, sfac=0.3, clip=1.0, colorbar=False,
+        scale=None, sfac=0.5, clip=1.0, colorbar=False,
         ylabel="Z [km]", xlabel="X [km]",
         grid="on", aspect="equal",
         fontname="STIXGeneral", fontsize=12,
@@ -148,7 +148,7 @@ if __name__ == "__main__":
     dm_invert_multi_shot = np.load(datadir + filestr + ".npz")["arr_0"]
 
     # Plot stack, depth slices, and CIGs through inverted stack
-    dm_scale = 1.0
+    dm_scale = 0.1
     def plot_stack_slices_cigs():
 
         # Locations for CIGs
@@ -168,7 +168,7 @@ if __name__ == "__main__":
             np.sum(dm_invert_multi_shot, axis=0).T,
             x0=vel.origin[0], xn=vel.origin[0] + vel.domain_size[0],
             y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
-            scale=None, sfac=0.3, clip=1.0, colorbar=False,
+            scale=None, sfac=0.5, clip=1.0, colorbar=False,
             ylabel="Z [km]", xlabel="X [km]",
             grid="on", aspect="equal",
             draw_line_coords=draw_line_coords, linewidth=1.0, linestyle="-", linecolor="red",
@@ -212,7 +212,7 @@ if __name__ == "__main__":
         for i, item in enumerate(locs):
             image_arr[0, i, :, :] = dm_invert_multi_shot[
                 0:dm_invert_multi_shot.shape[0], int(params["Nx"] * item), :
-            ].T
+            ]
 
         image_titles = [["X = 0.3 km", "X = 0.4 km", "X = 0.5 km", "X = 0.6 km", "X = 0.7 km"]]
 
@@ -228,4 +228,3 @@ if __name__ == "__main__":
         )
 
     plot_stack_slices_cigs()
-    
