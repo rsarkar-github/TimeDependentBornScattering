@@ -226,4 +226,6 @@ if __name__ == "__main__":
             nxticks=5, nyticks=5,
             savefig_fname=figdir + filestr + "_invert_cigs.pdf"
         )
-        
+
+    plot_stack_slices_cigs()
+    
