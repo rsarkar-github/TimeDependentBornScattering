@@ -229,3 +229,81 @@ if __name__ == "__main__":
         )
 
     plot_stack_slices_cigs()
+
+    # ---------------------------------------------------------------------------------
+    # Shot record comparisons
+
+    td_born_data_true_multi_shot = np.zeros((params["Ns"], params["Nt"], params["Nr"]), dtype=np.float32)
+    td_born_data_adjoint_image_multi_shot = np.zeros((params["Ns"], params["Nt"], params["Nr"]), dtype=np.float32)
+    td_born_data_inverted_model_multi_shot = np.zeros((params["Ns"], params["Nt"], params["Nr"]), dtype=np.float32)
+
+    # True data
+    DevitoOperators.td_born_forward(
+        model_pert=dm,
+        born_data=td_born_data_true_multi_shot,
+        src_coords=src_coord,
+        vel=vel,
+        geometry=geometry,
+        solver=solver,
+        params=params
+    )
+
+    # Data modeled using inverted model
+    DevitoOperators.td_born_forward(
+        model_pert=dm_invert_multi_shot,
+        born_data=td_born_data_inverted_model_multi_shot,
+        src_coords=src_coord,
+        vel=vel,
+        geometry=geometry,
+        solver=solver,
+        params=params
+    )
+
+    # Data modeled using adjoint + normalizatiom
+    DevitoOperators.td_born_forward(
+        model_pert=dm_adjoint_image,
+        born_data=td_born_data_adjoint_image_multi_shot,
+        src_coords=src_coord,
+        vel=vel,
+        geometry=geometry,
+        solver=solver,
+        params=params
+    )
+    alpha = np.inner(np.flatten(td_born_data_true_multi_shot), np.flatten(td_born_data_adjoint_image_multi_shot))
+    alpha = alpha / (np.linalg.norm(np.flatten(td_born_data_adjoint_image_multi_shot)) ** 2.0)
+    td_born_data_adjoint_image_multi_shot *= alpha
+
+    shotnum_list = [1, 3, 5, 7, 9]
+    shot_scale = 5.0
+    def plot_shot_comparison():
+
+        # Plot imaged data (t-x sections at depth values 20%, 40%, 60%, 80%)
+        image_nrows = len(shotnum_list)
+        image_ncols = 3
+        image_arr = np.zeros(
+            shape=(image_nrows, image_ncols, params["Nt"], params["Nr"]),
+            dtype=np.float32
+        )
+
+        image_titles = []
+
+        for i, item in enumerate(shotnum_list):
+
+            image_arr[i, 0, :, :] = td_born_data_true_multi_shot[item, :, :]
+            image_arr[i, 1, :, :] = td_born_data_inverted_model_multi_shot[item, :, :]
+            image_arr[i, 2, :, :] = td_born_data_adjoint_image_multi_shot[item, :, :]
+
+            image_titles.append(["X = " + ":4.2f".format(src_coord[item, 0]) + " km", "", ""])
+
+        plot_images_grid_xy(
+            image_grid=image_arr, image_titles=image_titles, axes_pad=0.5,
+            x0=vel.origin[0], xn=vel.origin[0] + vel.domain_size[0], y0=t0, yn=tn,
+            scale=shot_scale, vmin=None, vmax=None,
+            grid="on", aspect=cig_aspect, cmap="Greys", colorbar=True, clip=1.0,
+            ylabel="Time [s]", xlabel="X [km]",
+            fontname="STIXGeneral", fontsize=20,
+            nxticks=5, nyticks=5,
+            savefig_fname=figdir + filestr + "_shots.pdf"
+        )
+
+    plot_shot_comparison()
