@@ -301,7 +301,7 @@ if __name__ == "__main__":
             image_grid=image_arr, image_titles=image_titles, axes_pad=0.5,
             x0=vel.origin[0], xn=vel.origin[0] + vel.domain_size[0], y0=t0, yn=tn,
             scale=shot_scale, vmin=None, vmax=None,
-            grid="on", aspect=cig_aspect, cmap="Greys", colorbar=True, clip=1.0,
+            grid="on", aspect="auto", cmap="Greys", colorbar=True, clip=1.0,
             ylabel="Time [s]", xlabel="X [km]",
             fontname="STIXGeneral", fontsize=20,
             nxticks=5, nyticks=5,
@@ -321,7 +321,7 @@ if __name__ == "__main__":
 
         plt.rc('text', usetex=True)
 
-        plt.figure(figsize=(30, 10))
+        fig = plt.figure(figsize=(30, 10))
         plt.plot([i for i in range(niter)], residual, "-k", linewidth=1)
         plt.grid("on")
         plt.xlim(0, niter)
@@ -342,5 +342,7 @@ if __name__ == "__main__":
 
         plt.xlabel("Iterations", fontname="STIXGeneral", fontsize=20)
         plt.ylabel(r"$||v - \bar{v}||_2 \;/\; ||v||_2$", fontname="STIXGeneral", fontsize=20)
+
+        fig.savefig(figdir + filestr + "_obj.pdf", format="pdf", bbox_inches="tight", pad_inches=0.01)
 
     plot_residual()
