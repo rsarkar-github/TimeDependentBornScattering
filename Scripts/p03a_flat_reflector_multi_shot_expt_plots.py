@@ -270,11 +270,12 @@ if __name__ == "__main__":
         params=params
     )
     alpha = np.inner(td_born_data_true_multi_shot.flatten(), td_born_data_adjoint_image_multi_shot.flatten())
-    alpha = alpha / (np.linalg.norm(np.flatten(td_born_data_adjoint_image_multi_shot)) ** 2.0)
+    alpha = alpha / (np.linalg.norm(td_born_data_adjoint_image_multi_shot.flatten()) ** 2.0)
     td_born_data_adjoint_image_multi_shot *= alpha
 
     shotnum_list = [1, 3, 5, 7, 9]
     shot_scale = 5.0
+
     def plot_shot_comparison():
 
         # Plot imaged data (t-x sections at depth values 20%, 40%, 60%, 80%)
@@ -293,7 +294,7 @@ if __name__ == "__main__":
             image_arr[i, 1, :, :] = td_born_data_inverted_model_multi_shot[item, :, :]
             image_arr[i, 2, :, :] = td_born_data_adjoint_image_multi_shot[item, :, :]
 
-            image_titles.append(["X = " + ":4.2f".format(src_coord[item, 0]) + " km", "", ""])
+            image_titles.append(["X = " + ":4.2f".format(1e-3 * src_coord[item, 0]) + " km", "", ""])
 
         plot_images_grid_xy(
             image_grid=image_arr, image_titles=image_titles, axes_pad=0.5,
@@ -307,3 +308,20 @@ if __name__ == "__main__":
         )
 
     plot_shot_comparison()
+
+    # ---------------------------------------------------------------------------------
+    # Plot inversion residual
+
+    residual = np.load(datadir + filestr + ".npz")["arr_1"]
+    niter = residual.shape[0]
+
+    fig = plt.figure(figsize=(30, 10))
+    plt.plot(residual, [i for i in range(niter)], "-k", linewidth=2)
+
+    nxticks = 5
+    nyticks = 5
+    xticks = np.arange(0, niter, niter / nxticks)
+    xticklabels = ["{:d}".format(item) for item in xticks]
+    yticks = np.arange(0, 1.5, 1.5 / nyticks)
+    yticklabels = ["{:4.1f}".format(item) for item in yticks]
+    
