@@ -205,14 +205,14 @@ if __name__ == "__main__":
         image_nrows = 1
         image_ncols = len(locs)
         image_arr = np.zeros(
-            shape=(image_nrows, image_ncols, params["Nt"], params["Nz"]),
+            shape=(image_nrows, image_ncols, params["Nz"], params["Nt"]),
             dtype=np.float32
         )
 
         for i, item in enumerate(locs):
             image_arr[0, i, :, :] = dm_invert_multi_shot[
                 0:dm_invert_multi_shot.shape[0], int(params["Nx"] * item), :
-            ]
+            ].T
 
         image_titles = [["X = 0.3 km", "X = 0.4 km", "X = 0.5 km", "X = 0.6 km", "X = 0.7 km"]]
 
@@ -220,8 +220,8 @@ if __name__ == "__main__":
             image_grid=image_arr, image_titles=image_titles, axes_pad=0.5,
             x0=t0, xn=tn, y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
             scale=dm_scale, vmin=None, vmax=None,
-            grid="on", aspect="auto", cmap="Greys", colorbar=True, clip=1.0,
-            xlabel="X [km]", ylabel="Time [s]",
+            grid="on", aspect="auto", cmap="Greys", colorbar=False, clip=1.0,
+            xlabel="Time [s]", ylabel="Z [km]",
             fontname="STIXGeneral", fontsize=20,
             nxticks=5, nyticks=5,
             savefig_fname=figdir + filestr + "_invert_cigs.pdf"
