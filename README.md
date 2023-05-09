@@ -28,5 +28,5 @@ git cloned this project, and from there execute
 **python -m TimeDependentBornScattering.Scripts.p01_point_scatterers_image_cig_illustration**. Also make sure that you
 are in the right python environment with the needed packages.
 
-- The above runs will create some files in the directory **TimeDependentBornScattering/Data/**, and all figures will be
-- created in the diectory **TimeDependentBornScattering/Fig/**
+- The above runs will create some files in the directory **TimeDependentBornScattering/Data/**, and all figures will be 
+created in the diectory **TimeDependentBornScattering/Fig/**.
