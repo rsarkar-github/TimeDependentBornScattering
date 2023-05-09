@@ -298,7 +298,7 @@ if __name__ == "__main__":
             image_titles.append(["X = " + "{:4.2f}".format(1e-3 * src_coord[item, 0]) + " km", "", ""])
 
         plot_images_grid_xy(
-            image_grid=image_arr, image_titles=image_titles, axes_pad=0.5,
+            image_grid=image_arr, image_titles=image_titles, axes_pad=0.5, figsize=(10, 10),
             x0=vel.origin[0], xn=vel.origin[0] + vel.domain_size[0], y0=t0, yn=tn,
             scale=shot_scale, vmin=None, vmax=None,
             grid="on", aspect=1, cmap="Greys", colorbar=True, clip=1.0,
