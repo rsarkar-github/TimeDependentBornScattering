@@ -126,7 +126,7 @@ if __name__ == "__main__":
     src_dummy = np.empty((1, 2))
 
     src_dummy[0, :] = src_coord[int(src_coord.shape[0] / 2), :]
-    geometry = AcquisitionGeometry(v1_prime, rec_coord, src_dummy, t0, tn, f0=f0, src_type='Ricker')
+    geometry = AcquisitionGeometry(v1, rec_coord, src_dummy, t0, tn, f0=f0, src_type='Ricker')
     params1["Nt"] = geometry.nt
     del src_dummy
 
