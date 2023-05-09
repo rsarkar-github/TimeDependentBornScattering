@@ -193,7 +193,7 @@ if __name__ == "__main__":
         image_titles = [["Z = 0.3 km", "Z = 0.4 km"], ["Z = 0.5 km", "Z = 0.6 km"]]
 
         plot_images_grid_xy(
-            image_grid=image_arr, image_titles=image_titles, axes_pad=0.5,
+            image_grid=image_arr, image_titles=image_titles, axes_pad=0.5, figsize=(20, 10),
             x0=vel.origin[0], xn=vel.origin[0] + vel.domain_size[0], y0=t0, yn=tn,
             scale=dm_scale, vmin=None, vmax=None,
             grid="on", aspect="auto", cmap="Greys", colorbar=True, clip=1.0,

@@ -324,7 +324,7 @@ if __name__ == "__main__":
                                              np.linalg.norm(td_born_data_adjoint_image_multi_shot)
 
     shotnum_list = [1, 3, 5, 7, 9]
-    shot_scale = 0.01
+    shot_scale = 0.1
 
     def plot_shot_comparison():
 
@@ -391,6 +391,5 @@ if __name__ == "__main__":
         plt.ylabel(r"$||v - \bar{v}||_2 \;/\; ||v||_2$", fontname="STIXGeneral", fontsize=40)
 
         fig.savefig(figdir + filestr + "_obj.pdf", format="pdf", bbox_inches="tight", pad_inches=0.01)
-
 
     plot_residual()
