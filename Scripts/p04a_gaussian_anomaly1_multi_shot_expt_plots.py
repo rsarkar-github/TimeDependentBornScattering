@@ -124,9 +124,12 @@ if __name__ == "__main__":
 
     # Create the geometry objects for background velocity models
     src_dummy = np.empty((1, 2))
+
     src_dummy[0, :] = src_coord[int(src_coord.shape[0] / 2), :]
     geometry = AcquisitionGeometry(v1_prime, rec_coord, src_dummy, t0, tn, f0=f0, src_type='Ricker')
     params1["Nt"] = geometry.nt
+
+    del src_dummy
 
     # Define a solver object
     solver = AcousticWaveSolver(v1_prime, geometry, space_order=params1["so"])
