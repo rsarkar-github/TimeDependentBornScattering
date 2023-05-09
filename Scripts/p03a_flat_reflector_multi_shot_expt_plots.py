@@ -269,7 +269,7 @@ if __name__ == "__main__":
         solver=solver,
         params=params
     )
-    alpha = np.inner(np.flatten(td_born_data_true_multi_shot), np.flatten(td_born_data_adjoint_image_multi_shot))
+    alpha = np.inner(td_born_data_true_multi_shot.flatten(), td_born_data_adjoint_image_multi_shot.flatten())
     alpha = alpha / (np.linalg.norm(np.flatten(td_born_data_adjoint_image_multi_shot)) ** 2.0)
     td_born_data_adjoint_image_multi_shot *= alpha
 
