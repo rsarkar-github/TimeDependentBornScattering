@@ -169,7 +169,7 @@ if __name__ == "__main__":
     dm_invert_multi_shot = np.load(datadir + filestr + ".npz")["arr_0"]
 
     # Plot stack, depth slices, and CIGs through inverted stack
-    dm_scale = 1e-3
+    dm_scale = 1e-1
     cig_aspect = 2
 
     def plot_stack_slices_cigs():
@@ -285,7 +285,7 @@ if __name__ == "__main__":
         np.linalg.norm(res) / np.linalg.norm(td_born_data_adjoint_image_multi_shot)
 
     shotnum_list = [1, 3, 5, 7, 9]
-    shot_scale = 0.1
+    shot_scale = 2.0
 
     def plot_shot_comparison():
 
