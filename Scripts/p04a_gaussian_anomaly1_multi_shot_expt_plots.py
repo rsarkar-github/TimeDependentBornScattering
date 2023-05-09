@@ -169,26 +169,6 @@ if __name__ == "__main__":
     # Calculate residuals
     res = data - data_prime
 
-    # Create wrapper for time dependent Born Hessian
-    def hessian_wrap(model_pert_in, model_pert_out):
-        """
-        @Params
-        model_pert_in: input numpy array
-        model_pert_out: output numpy array
-        """
-        model_pert_out *= 0.
-
-        DevitoOperators.td_born_hessian(
-            model_pert_in=model_pert_in,
-            model_pert_out=model_pert_out,
-            src_coords=src_coord,
-            vel=v1,
-            geometry=geometry,
-            solver=solver,
-            params=params1,
-            dt=dt
-        )
-
     # Create rhs
     dm_adjoint_image = np.zeros((params1["Nt"], params1["Nx"], params1["Nz"]), dtype=np.float32)
     t_start = time.time()
@@ -247,12 +227,12 @@ if __name__ == "__main__":
             shape=(image_nrows, image_ncols, params1["Nt"], params1["Nx"]),
             dtype=np.float32
         )
-        image_arr[0, 0, :, :] = dm_invert_multi_shot[:, :, int(params1["Nz"] * 0.3)]
-        image_arr[0, 1, :, :] = dm_invert_multi_shot[:, :, int(params1["Nz"] * 0.4)]
-        image_arr[1, 0, :, :] = dm_invert_multi_shot[:, :, int(params1["Nz"] * 0.5)]
-        image_arr[1, 1, :, :] = dm_invert_multi_shot[:, :, int(params1["Nz"] * 0.6)]
+        image_arr[0, 0, :, :] = dm_invert_multi_shot[:, :, int(params1["Nz"] * 0.25)]
+        image_arr[0, 1, :, :] = dm_invert_multi_shot[:, :, int(params1["Nz"] * 0.5)]
+        image_arr[1, 0, :, :] = dm_invert_multi_shot[:, :, int(params1["Nz"] * 0.6)]
+        image_arr[1, 1, :, :] = dm_invert_multi_shot[:, :, int(params1["Nz"] * 0.75)]
 
-        image_titles = [["Z = 0.3 km", "Z = 0.4 km"], ["Z = 0.5 km", "Z = 0.6 km"]]
+        image_titles = [["Z = 0.5 km", "Z = 1.0 km"], ["Z = 1.2 km", "Z = 1.5 km"]]
 
         plot_images_grid_xy(
             image_grid=image_arr, image_titles=image_titles, axes_pad=0.5, figsize=(20, 10),
@@ -307,7 +287,8 @@ if __name__ == "__main__":
         vel=v1,
         geometry=geometry,
         solver=solver,
-        params=params1
+        params=params1,
+        dt=dt
     )
 
     # Data modeled using adjoint + normalization
@@ -318,7 +299,8 @@ if __name__ == "__main__":
         vel=v1,
         geometry=geometry,
         solver=solver,
-        params=params1
+        params=params1,
+        dt=dt
     )
     td_born_data_adjoint_image_multi_shot *= np.linalg.norm(res) / \
                                              np.linalg.norm(td_born_data_adjoint_image_multi_shot)
