@@ -260,7 +260,7 @@ if __name__ == "__main__":
         params=params
     )
 
-    # Data modeled using adjoint + normalizatiom
+    # Data modeled using adjoint + normalization
     DevitoOperators.td_born_forward(
         model_pert=dm_adjoint_image,
         born_data=td_born_data_adjoint_image_multi_shot,
@@ -270,9 +270,8 @@ if __name__ == "__main__":
         solver=solver,
         params=params
     )
-    alpha = np.inner(td_born_data_true_multi_shot.flatten(), td_born_data_adjoint_image_multi_shot.flatten())
-    alpha = alpha / (np.linalg.norm(td_born_data_adjoint_image_multi_shot.flatten()) ** 2.0)
-    # td_born_data_adjoint_image_multi_shot *= alpha
+    td_born_data_adjoint_image_multi_shot *= np.linalg.norm(td_born_data_true_multi_shot) / \
+                                             np.linalg.norm(td_born_data_adjoint_image_multi_shot)
 
     shotnum_list = [1, 3, 5, 7, 9]
     shot_scale = 5.0
@@ -319,6 +318,7 @@ if __name__ == "__main__":
         residual_max = np.max(residual)
         niter = residual.shape[0]
 
+        plt.rc('text', usetex=True)
         fig = plt.figure(figsize=(30, 10))
         plt.plot([i for i in range(niter)], residual, "-k", linewidth=1)
         plt.grid("on")
@@ -330,7 +330,7 @@ if __name__ == "__main__":
         xticks = np.arange(0, niter, niter / nxticks)
         xticklabels = ["{:4.0f}".format(item) for item in xticks]
         yticks = np.arange(0, residual_max, residual_max / nyticks)
-        yticklabels = ["{:4.1f}".format(item) for item in yticks]
+        yticklabels = ["{:4.2f}".format(item) for item in yticks]
 
         ax = plt.gca()
         ax.set_xticks(xticks)
