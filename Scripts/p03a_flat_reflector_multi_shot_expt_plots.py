@@ -274,7 +274,7 @@ if __name__ == "__main__":
                                              np.linalg.norm(td_born_data_adjoint_image_multi_shot)
 
     shotnum_list = [1, 3, 5, 7, 9]
-    shot_scale = 5.0
+    shot_scale = 1.0
 
     def plot_shot_comparison():
 
