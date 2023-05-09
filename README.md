@@ -6,6 +6,7 @@
 
 # How to reproduce the results? The following steps were tested on Linux (Centos & Ubuntu) only.
 - After cloning this repository, install the Python packages as indicated in the file "requirements.txt".
+Steps to install the packages are indicated below in the Section **How to install the packages**.
 
 - Run the following scripts:
   - p01_point_scatterers_image_cig_illustration.py
@@ -30,3 +31,15 @@ are in the right python environment with the needed packages.
 
 - The above runs will create some files in the directory **TimeDependentBornScattering/Data/**, and all figures will be 
 created in the diectory **TimeDependentBornScattering/Fig/**.
+
+# How to install the packages (assumes conda is installed).
+
+```ruby
+conda create -n py39 python=3.9
+conda activate py39
+conda install -c anaconda numpy=1.23.5
+conda install -c anaconda scipy=1.10.0
+conda install -c numba numba=0.56.4
+conda install matplotlib=3.7.1
+pip install devito=4.8.0
+```
