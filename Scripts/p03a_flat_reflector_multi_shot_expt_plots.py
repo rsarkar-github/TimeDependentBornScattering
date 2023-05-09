@@ -216,7 +216,7 @@ if __name__ == "__main__":
                 0:int(dm_invert_multi_shot.shape[0] / 2), int(params["Nx"] * item), :
             ].T
 
-        image_titles = [["X = 0.3 km", "X = 0.4 km", "X = 0.5 km", "X = 0.6 km", "X = 0.7 km"]]
+        image_titles = [["X = " + "{:4.1f}".format(item * vel.domain_size[0] * 1e-3) + " km" for item in locs]]
 
         plot_images_grid_xy(
             image_grid=image_arr, image_titles=image_titles, axes_pad=0.5,
@@ -270,8 +270,8 @@ if __name__ == "__main__":
         solver=solver,
         params=params
     )
-    td_born_data_adjoint_image_multi_shot *= np.linalg.norm(td_born_data_true_multi_shot) / \
-                                             np.linalg.norm(td_born_data_adjoint_image_multi_shot)
+    td_born_data_adjoint_image_multi_shot *= \
+        np.linalg.norm(td_born_data_true_multi_shot) / np.linalg.norm(td_born_data_adjoint_image_multi_shot)
 
     shotnum_list = [1, 3, 5, 7, 9]
     shot_scale = 1.0

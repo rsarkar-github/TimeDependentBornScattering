@@ -255,12 +255,12 @@ if __name__ == "__main__":
             dtype=np.float32
         )
 
-        for i, item in enumerate(locs):
-            image_arr[0, i, :, :] = dm_invert_multi_shot[
+        for ii, item in enumerate(locs):
+            image_arr[0, ii, :, :] = dm_invert_multi_shot[
                                     0:int(dm_invert_multi_shot.shape[0] / 2), int(params1["Nx"] * item), :
                                     ].T
 
-        image_titles = [["X = 0.3 km", "X = 0.4 km", "X = 0.5 km", "X = 0.6 km", "X = 0.7 km"]]
+        image_titles = [["X = " + "{:4.1f}".format(item * v1.domain_size[0] * 1e-3) + " km" for item in locs]]
 
         plot_images_grid_xy(
             image_grid=image_arr, image_titles=image_titles, axes_pad=0.5,
@@ -304,8 +304,8 @@ if __name__ == "__main__":
         params=params1,
         dt=dt
     )
-    td_born_data_adjoint_image_multi_shot *= np.linalg.norm(res) / \
-                                             np.linalg.norm(td_born_data_adjoint_image_multi_shot)
+    td_born_data_adjoint_image_multi_shot *= \
+        np.linalg.norm(res) / np.linalg.norm(td_born_data_adjoint_image_multi_shot)
 
     shotnum_list = [1, 3, 5, 7, 9]
     shot_scale = 0.1
@@ -322,10 +322,10 @@ if __name__ == "__main__":
 
         image_titles = []
 
-        for i, item in enumerate(shotnum_list):
-            image_arr[i, 0, :, :] = res[item, :, :]
-            image_arr[i, 1, :, :] = td_born_data_inverted_model_multi_shot[item, :, :]
-            image_arr[i, 2, :, :] = td_born_data_adjoint_image_multi_shot[item, :, :]
+        for ii, item in enumerate(shotnum_list):
+            image_arr[ii, 0, :, :] = res[item, :, :]
+            image_arr[ii, 1, :, :] = td_born_data_inverted_model_multi_shot[item, :, :]
+            image_arr[ii, 2, :, :] = td_born_data_adjoint_image_multi_shot[item, :, :]
 
             image_titles.append(["X = " + "{:4.2f}".format(1e-3 * src_coord[item, 0]) + " km", "", ""])
 
@@ -353,7 +353,7 @@ if __name__ == "__main__":
 
         plt.rc('text', usetex=True)
         fig = plt.figure(figsize=(30, 10))
-        plt.plot([i for i in range(niter)], residual, "-k", linewidth=1)
+        plt.plot([ii for ii in range(niter)], residual, "-k", linewidth=1)
         plt.grid("on")
         plt.xlim(0, niter)
         plt.ylim(0, np.max(residual))
