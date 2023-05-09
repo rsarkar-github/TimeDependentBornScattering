@@ -87,7 +87,7 @@ if __name__ == "__main__":
 
     # Plot velocity
     plot_image_xy(
-        v1_prime.vp.data.T,
+        v1_prime.vp.data[params1["nbl"]:params1["nbl"]+params1["Nx"], params1["nbl"]:params1["nbl"] + params1["Nz"]].T,
         x0=v1.origin[0], xn=v1.origin[0] + v1.domain_size[0],
         y0=v1.origin[1], yn=v1.origin[1] + v1.domain_size[1],
         vmin=1.8, vmax=2.7, colorbar=True, cmap="jet",
@@ -210,7 +210,7 @@ if __name__ == "__main__":
     dm_invert_multi_shot = np.load(datadir + filestr + ".npz")["arr_0"]
 
     # Plot stack, depth slices, and CIGs through inverted stack
-    dm_scale = 0.1
+    dm_scale = 5e-4
     cig_aspect = 2
 
     def plot_stack_slices_cigs():
@@ -324,7 +324,7 @@ if __name__ == "__main__":
                                              np.linalg.norm(td_born_data_adjoint_image_multi_shot)
 
     shotnum_list = [1, 3, 5, 7, 9]
-    shot_scale = 1.0
+    shot_scale = 0.02
 
     def plot_shot_comparison():
 
