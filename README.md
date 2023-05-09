@@ -2,7 +2,7 @@
 
 - Numpy, Devito based Python codes for the Acoustic Time Dependent Born Scattering problem
 
-- Contains all codes to reproduce figures in Part II: Chapter 1 of thesis
+- Contains all codes to reproduce figures in Part II: Chapter 5 of thesis
 
 # How to reproduce the results? The following steps were tested on Linux (Centos & Ubuntu) only.
 - After cloning this repository, install the Python packages as indicated in the file "requirements.txt".
