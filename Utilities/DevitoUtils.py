@@ -157,7 +157,8 @@ def plot_image_xy(
 
 
 def plot_images_grid_xy(
-        image_grid, image_titles, x0, xn, y0, yn, axes_pad=0.35, scale=None, vmin=None, vmax=None, sfac=1.0, clip=1.0,
+        image_grid, image_titles, x0, xn, y0, yn, figsize=(30, 10), axes_pad=0.35,
+        scale=None, vmin=None, vmax=None, sfac=1.0, clip=1.0,
         grid="off", aspect="auto", cmap="Greys", colorbar=True, cbar_size="1%", cbar_pad=0.15,
         xlabel=None, ylabel=None, fontname="Times New Roman", fontsize=15,
         nxticks=5, nyticks=5, xticklabels_fmt="{:4.1f}", yticklabels_fmt="{:4.1f}",
@@ -186,7 +187,7 @@ def plot_images_grid_xy(
         ylabel = "Z position [km]"
 
     # Create figure and image grid
-    fig = plt.figure(figsize=(30, 10))
+    fig = plt.figure(figsize=figsize)
     img_grid = ImageGrid(
         fig,
         111,
