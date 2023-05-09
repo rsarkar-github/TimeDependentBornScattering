@@ -10,15 +10,15 @@ configuration['log-level'] = 'WARNING'
 
 if __name__ == "__main__":
 
-    filestr = "point_scatterer_single_shot"
+    filestr = "p03_flat_reflector_multi_shot"
 
-    # Create params dicts (default grid spacing 10m x 10m)
+    # Create params dicts
     params = {
         "Nx": 300,
         "Nz": 100,
         "Nt": 100,   # this has to be updated later
         "nbl": 75,
-        "Ns": 1,
+        "Ns": 10,
         "Nr": 200,
         "so": 4,
         "to": 2
@@ -37,7 +37,7 @@ if __name__ == "__main__":
     rec_depth = 20.0                        # Depth is 20m
 
     src_coord = np.empty((params["Ns"], 2))
-    src_coord[:, 0] = 0.5 * vel.domain_size[0]
+    src_coord[:, 0] = np.linspace(0, vel.domain_size[0], num=params["Ns"])
     src_coord[:, 1] = src_depth
 
     rec_coord = np.empty((params["Nr"], 2))
@@ -55,9 +55,9 @@ if __name__ == "__main__":
     # Define a solver object
     solver = AcousticWaveSolver(vel, geometry, space_order=params["so"])
 
-    # Create point perturbation
+    # Create flat reflector
     dm = np.zeros((params["Nt"], params["Nx"], params["Nz"]), dtype=np.float32)
-    dm[:, int(params["Nx"] / 2), int(params["Nz"] / 2)] = 1.0
+    dm[:, int(params["Nx"] * 0.05):int(params["Nx"] * 0.95), int(params["Nz"] / 2)] = 1.0
 
     # Create wrapper for time dependent Born Hessian
     def hessian_wrap(model_pert_in, model_pert_out):

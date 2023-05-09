@@ -12,7 +12,7 @@ configuration['log-level'] = 'WARNING'
 
 if __name__ == "__main__":
 
-    filestr = "gaussian_anomaly2_multi_shot"
+    filestr = "p04_gaussian_anomaly1_multi_shot"
 
     # Create params dicts
     params1 = {
@@ -31,7 +31,7 @@ if __name__ == "__main__":
     ######################################################
     # Create models
     v1 = create_model(shape=(params1["Nx"], params1["Nz"]))
-    v1.vp.data[:, :] = 2.5
+    v1.vp.data[:, :] = 2.0
 
     # Initialize based on params1
     dv = np.zeros(shape=(params1["Nx"] + 2 * params1["nbl"], params1["Nz"] + 2 * params1["nbl"]), dtype=np.float32)
@@ -77,7 +77,7 @@ if __name__ == "__main__":
 
     # Create models
     v1_prime = create_model(shape=(params1["Nx"], params1["Nz"]))
-    v1_prime.vp.data[:, :] = v1.vp.data - dv
+    v1_prime.vp.data[:, :] = v1.vp.data + dv
 
     ######################################################################
     # This part of the code creates the acquisition geometry, solvers
@@ -106,20 +106,18 @@ if __name__ == "__main__":
 
     # Create the geometry objects for background velocity models
     src_dummy = np.empty((1, 2))
-
     src_dummy[0, :] = src_coord[int(src_coord.shape[0] / 2), :]
-    geometry = AcquisitionGeometry(v1, rec_coord, src_dummy, t0, tn, f0=f0, src_type='Ricker')
+    geometry = AcquisitionGeometry(v1_prime, rec_coord, src_dummy, t0, tn, f0=f0, src_type='Ricker')
     params1["Nt"] = geometry.nt
-    del src_dummy
 
     # Define a solver object
-    solver = AcousticWaveSolver(v1, geometry, space_order=params1["so"])
+    solver = AcousticWaveSolver(v1_prime, geometry, space_order=params1["so"])
 
     ##################################################################################################
     # This part of the code generates the forward data using the two models and computes the residual
     ##################################################################################################
 
-    dt = v1.critical_dt
+    dt = v1_prime.critical_dt
 
     # Allocate numpy arrays to store data
     data = np.zeros(shape=(params1["Ns"], params1["Nt"], params1["Nr"]), dtype=np.float32)

@@ -11,7 +11,7 @@ configuration['log-level'] = 'WARNING'
 
 if __name__ == "__main__":
 
-    filestr = "sigsbee1_multi_shot"
+    filestr = "p06_sigsbee_lo_multi_shot"
 
     ######################################################
     # This part of the code loads the Sigsbee model
@@ -19,11 +19,11 @@ if __name__ == "__main__":
 
     # Create params dicts
     params = {
-        "Nx": 300,
+        "Nx": 600,
         "Nz": 200,
         "Nt": 100,   # this has to be updated later
         "nbl": 75,
-        "Ns": 10,
+        "Ns": 20,
         "Nr": 200,
         "so": 4,
         "to": 2
@@ -54,7 +54,7 @@ if __name__ == "__main__":
 
     # Create background model
     v1 = create_model(shape=(params["Nx"], params["Nz"]))
-    v1.vp.data[:, :] = 4.5
+    v1.vp.data[:, :] = 1.5
 
     ######################################################################
     # This part of the code creates the acquisition geometry, solvers
@@ -62,7 +62,7 @@ if __name__ == "__main__":
 
     # Simulation time, wavelet
     t0 = 0.
-    tn = 3000.          # Simulation last 3 second (3000 ms)
+    tn = 4000.          # Simulation last 4 second (4000 ms)
     f0 = 0.010          # Source peak frequency is 10Hz (0.010 kHz)
 
     # Reflection acquisition geometry (sources and receivers are equally spaced in X direction)
