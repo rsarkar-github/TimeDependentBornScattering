@@ -298,10 +298,10 @@ if __name__ == "__main__":
             image_titles.append(["X = " + "{:4.2f}".format(1e-3 * src_coord[item, 0]) + " km", "", ""])
 
         plot_images_grid_xy(
-            image_grid=image_arr, image_titles=image_titles, axes_pad=0.5, figsize=(10, 10),
+            image_grid=image_arr, image_titles=image_titles, axes_pad=0.5, figsize=(20, 20),
             x0=vel.origin[0], xn=vel.origin[0] + vel.domain_size[0], y0=t0, yn=tn,
             scale=shot_scale, vmin=None, vmax=None,
-            grid="on", aspect=1, cmap="Greys", colorbar=True, clip=1.0,
+            grid="on", aspect="auto", cmap="Greys", colorbar=True, clip=1.0,
             ylabel="Time [s]", xlabel="X [km]",
             fontname="STIXGeneral", fontsize=20,
             nxticks=5, nyticks=5,
@@ -318,8 +318,6 @@ if __name__ == "__main__":
         residual = np.load(datadir + filestr + ".npz")["arr_1"]
         residual_max = np.max(residual)
         niter = residual.shape[0]
-
-        plt.rc('text', usetex=True)
 
         fig = plt.figure(figsize=(30, 10))
         plt.plot([i for i in range(niter)], residual, "-k", linewidth=1)
