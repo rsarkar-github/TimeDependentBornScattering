@@ -149,7 +149,7 @@ if __name__ == "__main__":
 
     # Plot stack, depth slices, and CIGs through inverted stack
     dm_scale = 0.1
-    cig_aspect = 2.0
+    cig_aspect = 0.5
     def plot_stack_slices_cigs():
 
         # Locations for CIGs
@@ -221,7 +221,7 @@ if __name__ == "__main__":
             image_grid=image_arr, image_titles=image_titles, axes_pad=0.5,
             x0=t0, xn=tn, y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
             scale=dm_scale, vmin=None, vmax=None,
-            grid="on", aspect=cig_aspect, cmap="Greys", colorbar=False, clip=1.0,
+            grid="on", aspect=cig_aspect, cmap="Greys", colorbar=True, clip=1.0,
             xlabel="Time [s]", ylabel="Z [km]",
             fontname="STIXGeneral", fontsize=20,
             nxticks=5, nyticks=5,
