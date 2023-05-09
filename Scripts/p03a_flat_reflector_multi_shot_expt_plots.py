@@ -149,7 +149,7 @@ if __name__ == "__main__":
 
     # Plot stack, depth slices, and CIGs through inverted stack
     dm_scale = 0.1
-    cig_aspect = 0.5
+    cig_aspect = 5
     def plot_stack_slices_cigs():
 
         # Locations for CIGs
