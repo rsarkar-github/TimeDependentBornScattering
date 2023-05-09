@@ -150,6 +150,7 @@ if __name__ == "__main__":
     # Plot stack, depth slices, and CIGs through inverted stack
     dm_scale = 0.1
     cig_aspect = 2
+
     def plot_stack_slices_cigs():
 
         # Locations for CIGs
@@ -312,16 +313,34 @@ if __name__ == "__main__":
     # ---------------------------------------------------------------------------------
     # Plot inversion residual
 
-    residual = np.load(datadir + filestr + ".npz")["arr_1"]
-    niter = residual.shape[0]
+    def plot_residual():
 
-    fig = plt.figure(figsize=(30, 10))
-    plt.plot(residual, [i for i in range(niter)], "-k", linewidth=2)
+        residual = np.load(datadir + filestr + ".npz")["arr_1"]
+        residual_max = np.max(residual)
+        niter = residual.shape[0]
 
-    nxticks = 5
-    nyticks = 5
-    xticks = np.arange(0, niter, niter / nxticks)
-    xticklabels = ["{:d}".format(item) for item in xticks]
-    yticks = np.arange(0, 1.5, 1.5 / nyticks)
-    yticklabels = ["{:4.1f}".format(item) for item in yticks]
-    
+        plt.rc('text', usetex=True)
+
+        plt.figure(figsize=(30, 10))
+        plt.plot([i for i in range(niter)], residual, "-k", linewidth=1)
+        plt.grid("on")
+        plt.xlim(0, niter)
+        plt.ylim(0, np.max(residual))
+
+        nxticks = 5
+        nyticks = 5
+        xticks = np.arange(0, niter, niter / nxticks)
+        xticklabels = ["{:4.0f}".format(item) for item in xticks]
+        yticks = np.arange(0, residual_max, residual_max / nyticks)
+        yticklabels = ["{:4.1f}".format(item) for item in yticks]
+
+        ax = plt.gca()
+        ax.set_xticks(xticks)
+        ax.set_xticklabels(xticklabels, fontname="STIXGeneral", fontsize=20)
+        ax.set_yticks(yticks)
+        ax.set_yticklabels(yticklabels, fontname="STIXGeneral", fontsize=20)
+
+        plt.xlabel("Iterations", fontname="STIXGeneral", fontsize=20)
+        plt.ylabel(r"$||v - \bar{v}||_2 \;/\; ||v||_2$", fontname="STIXGeneral", fontsize=20)
+
+    plot_residual()
