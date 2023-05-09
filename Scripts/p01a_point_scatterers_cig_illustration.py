@@ -1,10 +1,8 @@
 import numpy as np
 import scipy as sp
 import time
-import matplotlib.pyplot as plt
 from ..Operators import DevitoOperators
-from ..Utilities.DevitoUtils import create_model, plot_image_xy, plot_images_grid_xy
-from ..Utilities.Utils import ricker_time
+from ..Utilities.DevitoUtils import create_model, plot_image_xy
 from examples.seismic.acoustic import AcousticWaveSolver
 from examples.seismic import AcquisitionGeometry
 from devito import configuration
@@ -14,14 +12,7 @@ configuration['log-level'] = 'WARNING'
 if __name__ == "__main__":
 
     """
-    This script does the following:
-    - The physical velocity model is constant 2 km/s
-    - Places time-invariant perturbations at different depth levels (point scatterers, but slightly smoothed)
-    - Models TD Born scattering data
-    - Images the modeled data
-    - Experiment is repeated for single source (twice at different locations), multiple source
-    - Sources placed at grid points at top of model, depth 20 m
-    - Receivers placed at every grid point at top of model, depth 20 m
+    This script performs CIG experiment
     """
 
     basepath = "TimeDependentBornScattering/"

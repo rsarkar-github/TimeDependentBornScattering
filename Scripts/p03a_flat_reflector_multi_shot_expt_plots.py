@@ -1,7 +1,9 @@
 import numpy as np
 import time
 from ..Operators import DevitoOperators
-from ..Utilities.DevitoUtils import create_model, conjugate_gradient
+from ..Utilities.DevitoUtils import create_model, plot_image_xy, plot_images_grid_xy
+from ..Utilities.Utils import ricker_time
+import matplotlib.pyplot as plt
 from examples.seismic.acoustic import AcousticWaveSolver
 from examples.seismic import AcquisitionGeometry
 from devito import configuration
@@ -10,7 +12,13 @@ configuration['log-level'] = 'WARNING'
 
 if __name__ == "__main__":
 
+    basepath = "TimeDependentBornScattering/"
+    figdir = basepath + "Fig/"
+    datadir = basepath + "Data/"
     filestr = "p03_flat_reflector_multi_shot"
+
+    # ----------------------------------------------------------------------------
+    # Geometry and defining the problem
 
     # Create params dicts
     params = {
@@ -52,6 +60,37 @@ if __name__ == "__main__":
     params["Nt"] = geometry.nt
     del src_dummy
 
+    # Plot ricker
+    def plot_ricker(savefig_fname):
+
+        nt = 250
+        dt = 0.001
+        fpeak = f0 * 1000
+        ricker_t, ricker_vals = ricker_time(freq_peak=fpeak, nt=nt, dt=dt, delay=1.0 / fpeak)
+
+        plt.plot(ricker_t, ricker_vals, 'k-')
+        plt.grid("on")
+
+        ax = plt.gca()
+        xticks = np.arange(0, nt * dt, nt * dt / 5)
+        xticklabels = ["{:4.2f}".format(item) for item in xticks]
+        yticks = ax.get_yticks()
+        yticklabels = ["{:4.1f}".format(item) for item in yticks]
+
+        ax.set_xticks(xticks)
+        ax.set_xticklabels(xticklabels, fontname="STIXGeneral", fontsize=12)
+        ax.set_yticks(yticks)
+        ax.set_yticklabels(yticklabels, fontname="STIXGeneral", fontsize=12)
+        ax.set_xlabel("Time [s]", fontname="STIXGeneral", fontsize=12)
+        ax.set_ylabel("Amplitude", fontname="STIXGeneral", fontsize=12)
+        ax.set_aspect(0.05)
+
+        plt.savefig(savefig_fname, format="pdf", bbox_inches="tight", pad_inches=0.01)
+        plt.show()
+        plt.close()
+
+    plot_ricker(savefig_fname=figdir + filestr + "_wavelet.pdf")
+
     # Define a solver object
     solver = AcousticWaveSolver(vel, geometry, space_order=params["so"])
 
@@ -59,7 +98,18 @@ if __name__ == "__main__":
     dm = np.zeros((params["Nt"], params["Nx"], params["Nz"]), dtype=np.float32)
     dm[:, int(params["Nx"] * 0.05):int(params["Nx"] * 0.95), int(params["Nz"] / 2)] = 1.0
 
-    # Create wrapper for time dependent Born Hessian
+    # Plot flat reflector
+    plot_image_xy(
+        dm[100, :, :].T,
+        x0=vel.origin[0], xn=vel.origin[0] + vel.domain_size[0],
+        y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
+        scale=None, sfac=0.3, clip=1.0, colorbar=False,
+        ylabel="Z [km]", xlabel="X [km]",
+        grid="on", aspect="equal",
+        fontname="STIXGeneral", fontsize=12,
+        savefig_fname=figdir + filestr + "_model_pert.pdf"
+    )
+
     def hessian_wrap(model_pert_in, model_pert_out):
         """
         @Params
@@ -78,7 +128,7 @@ if __name__ == "__main__":
             params=params
         )
 
-    # Create rhs for inversion
+    # Create rhs
     dm_adjoint_image = np.zeros((params["Nt"], params["Nx"], params["Nz"]), dtype=np.float32)
     t_start = time.time()
     DevitoOperators.td_born_hessian(
@@ -93,15 +143,87 @@ if __name__ == "__main__":
     t_end = time.time()
     print("\nCreate adjoint image took ", t_end - t_start, " sec")
 
-    # Run the inversion
-    niter = 100
-    dm_invert, resid = conjugate_gradient(
-        hessian_wrap,
-        rhs=dm_adjoint_image,
-        x0=None,
-        niter=niter,
-        printobj=False
-    )
+    # ---------------------------------------------------------------------------------
+    # Load inverted model
+    dm_invert_multi_shot = np.load(datadir + filestr + ".npz")["arr_0"]
 
-    # Save results
-    np.savez("TimeDependentBornScattering/Data/" + filestr + ".npz", dm_invert, resid)
+    # Plot stack, depth slices, and CIGs through inverted stack
+    dm_scale = 1.0
+    def plot_stack_slices_cigs():
+
+        # Locations for CIGs
+        locs = [0.3, 0.4, 0.5, 0.6, 0.7]
+
+        # Stack plot
+        draw_line_coords = []
+        for item in locs:
+            draw_line_coords.append(
+                [
+                    [1e-3 * vel.domain_size[0] * item, 1e-3 * vel.domain_size[0] * item],
+                    [1e-3 * vel.origin[1], 1e-3 * (vel.origin[1] + vel.domain_size[1])]
+                ]
+            )
+
+        plot_image_xy(
+            np.sum(dm_invert_multi_shot, axis=0).T,
+            x0=vel.origin[0], xn=vel.origin[0] + vel.domain_size[0],
+            y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
+            scale=None, sfac=0.3, clip=1.0, colorbar=False,
+            ylabel="Z [km]", xlabel="X [km]",
+            grid="on", aspect="equal",
+            draw_line_coords=draw_line_coords, linewidth=1.0, linestyle="-", linecolor="red",
+            fontname="STIXGeneral", fontsize=12,
+            savefig_fname=figdir + filestr + "_invert_stack.pdf"
+        )
+
+        # Plot imaged data (t-x sections at depth values 20%, 40%, 60%, 80%)
+        image_nrows = 2
+        image_ncols = 2
+        image_arr = np.zeros(
+            shape=(image_nrows, image_ncols, params["Nt"], params["Nx"]),
+            dtype=np.float32
+        )
+        image_arr[0, 0, :, :] = dm_invert_multi_shot[:, :, int(params["Nz"] * 0.3)]
+        image_arr[0, 1, :, :] = dm_invert_multi_shot[:, :, int(params["Nz"] * 0.4)]
+        image_arr[1, 0, :, :] = dm_invert_multi_shot[:, :, int(params["Nz"] * 0.5)]
+        image_arr[1, 1, :, :] = dm_invert_multi_shot[:, :, int(params["Nz"] * 0.6)]
+
+        image_titles = [["Z = 0.3 km", "Z = 0.4 km"], ["Z = 0.5 km", "Z = 0.6 km"]]
+
+        plot_images_grid_xy(
+            image_grid=image_arr, image_titles=image_titles, axes_pad=0.5,
+            x0=vel.origin[0], xn=vel.origin[0] + vel.domain_size[0], y0=t0, yn=tn,
+            scale=dm_scale, vmin=None, vmax=None,
+            grid="on", aspect="auto", cmap="Greys", colorbar=True, clip=1.0,
+            xlabel="X [km]", ylabel="Time [s]",
+            fontname="STIXGeneral", fontsize=20,
+            nxticks=5, nyticks=5,
+            savefig_fname=figdir + filestr + "_invert_tx_images.pdf"
+        )
+
+        # Plot CIGs
+        image_nrows = 1
+        image_ncols = len(locs)
+        image_arr = np.zeros(
+            shape=(image_nrows, image_ncols, params["Nt"], params["Nx"]),
+            dtype=np.float32
+        )
+
+        for i, item in enumerate(locs):
+            image_arr[0, i, :, :] = dm_invert_multi_shot[
+                0:dm_invert_multi_shot.shape[0], int(params["Nx"] * item), :
+            ].T
+
+        image_titles = [["X = 0.3 km", "X = 0.4 km", "X = 0.5 km", "X = 0.6 km", "X = 0.7 km"]]
+
+        plot_images_grid_xy(
+            image_grid=image_arr, image_titles=image_titles, axes_pad=0.5,
+            x0=t0, xn=tn, y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
+            scale=dm_scale, vmin=None, vmax=None,
+            grid="on", aspect="auto", cmap="Greys", colorbar=True, clip=1.0,
+            xlabel="X [km]", ylabel="Time [s]",
+            fontname="STIXGeneral", fontsize=20,
+            nxticks=5, nyticks=5,
+            savefig_fname=figdir + filestr + "_invert_cigs.pdf"
+        )
+        
