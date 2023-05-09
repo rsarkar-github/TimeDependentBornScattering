@@ -301,7 +301,7 @@ if __name__ == "__main__":
             image_grid=image_arr, image_titles=image_titles, axes_pad=0.5,
             x0=vel.origin[0], xn=vel.origin[0] + vel.domain_size[0], y0=t0, yn=tn,
             scale=shot_scale, vmin=None, vmax=None,
-            grid="on", aspect=5, cmap="Greys", colorbar=True, clip=1.0,
+            grid="on", aspect=1, cmap="Greys", colorbar=True, clip=1.0,
             ylabel="Time [s]", xlabel="X [km]",
             fontname="STIXGeneral", fontsize=20,
             nxticks=5, nyticks=5,
@@ -336,12 +336,12 @@ if __name__ == "__main__":
 
         ax = plt.gca()
         ax.set_xticks(xticks)
-        ax.set_xticklabels(xticklabels, fontname="STIXGeneral", fontsize=20)
+        ax.set_xticklabels(xticklabels, fontname="STIXGeneral", fontsize=40)
         ax.set_yticks(yticks)
-        ax.set_yticklabels(yticklabels, fontname="STIXGeneral", fontsize=20)
+        ax.set_yticklabels(yticklabels, fontname="STIXGeneral", fontsize=40)
 
-        plt.xlabel("Iterations", fontname="STIXGeneral", fontsize=20)
-        plt.ylabel(r"$||v - \bar{v}||_2 \;/\; ||v||_2$", fontname="STIXGeneral", fontsize=20)
+        plt.xlabel("Iterations", fontname="STIXGeneral", fontsize=40)
+        plt.ylabel(r"$||v - \bar{v}||_2 \;/\; ||v||_2$", fontname="STIXGeneral", fontsize=40)
 
         fig.savefig(figdir + filestr + "_obj.pdf", format="pdf", bbox_inches="tight", pad_inches=0.01)
 
