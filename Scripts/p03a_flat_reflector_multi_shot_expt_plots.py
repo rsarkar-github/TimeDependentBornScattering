@@ -149,7 +149,7 @@ if __name__ == "__main__":
 
     # Plot stack, depth slices, and CIGs through inverted stack
     dm_scale = 0.1
-    cig_aspect = 5
+    cig_aspect = 8
     def plot_stack_slices_cigs():
 
         # Locations for CIGs
@@ -206,20 +206,20 @@ if __name__ == "__main__":
         image_nrows = 1
         image_ncols = len(locs)
         image_arr = np.zeros(
-            shape=(image_nrows, image_ncols, params["Nz"], params["Nt"]),
+            shape=(image_nrows, image_ncols, params["Nz"], int(params["Nt"] / 2)),
             dtype=np.float32
         )
 
         for i, item in enumerate(locs):
             image_arr[0, i, :, :] = dm_invert_multi_shot[
-                0:dm_invert_multi_shot.shape[0], int(params["Nx"] * item), :
+                0:int(dm_invert_multi_shot.shape[0] / 2), int(params["Nx"] * item), :
             ].T
 
         image_titles = [["X = 0.3 km", "X = 0.4 km", "X = 0.5 km", "X = 0.6 km", "X = 0.7 km"]]
 
         plot_images_grid_xy(
             image_grid=image_arr, image_titles=image_titles, axes_pad=0.5,
-            x0=t0, xn=tn, y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
+            x0=t0, xn=tn/2, y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
             scale=dm_scale, vmin=None, vmax=None,
             grid="on", aspect=cig_aspect, cmap="Greys", colorbar=True, clip=1.0,
             xlabel="Time [s]", ylabel="Z [km]",
