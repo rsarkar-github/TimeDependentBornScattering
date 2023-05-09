@@ -205,7 +205,7 @@ if __name__ == "__main__":
         image_nrows = 1
         image_ncols = len(locs)
         image_arr = np.zeros(
-            shape=(image_nrows, image_ncols, params["Nt"], params["Nx"]),
+            shape=(image_nrows, image_ncols, params["Nt"], params["Nz"]),
             dtype=np.float32
         )
 
