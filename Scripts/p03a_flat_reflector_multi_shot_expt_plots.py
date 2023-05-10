@@ -150,6 +150,7 @@ if __name__ == "__main__":
     # Plot stack, depth slices, and CIGs through inverted stack
     dm_scale = 0.1
     cig_aspect = 2
+    shotnum_list = [1, 3, 5, 7, 9]
 
     def plot_stack_slices_cigs():
 
@@ -166,6 +167,25 @@ if __name__ == "__main__":
                 ]
             )
 
+        locs_tx = [0.3, 0.4, 0.5, 0.6]
+        draw_line_coords_grp1 = []
+        for item in locs_tx:
+            draw_line_coords_grp1.append(
+                [
+                    [1e-3 * vel.origin[0], 1e-3 * (vel.origin[0] + vel.domain_size[0])],
+                    [1e-3 * vel.domain_size[1] * item, 1e-3 * vel.domain_size[1] * item]
+                ]
+            )
+
+        marker_coords = []
+        for item in shotnum_list:
+            marker_coords.append(
+                [
+                    [1e-3 * src_coord[item, 0]],
+                    [1e-3 * src_coord[item, 1]]
+                ]
+            )
+
         plot_image_xy(
             np.sum(dm_invert_multi_shot, axis=0).T,
             x0=vel.origin[0], xn=vel.origin[0] + vel.domain_size[0],
@@ -174,6 +194,8 @@ if __name__ == "__main__":
             ylabel="Z [km]", xlabel="X [km]",
             grid="on", aspect="equal",
             draw_line_coords=draw_line_coords, linewidth=1.0, linestyle="-", linecolor="red",
+            draw_line_coords_grp1=draw_line_coords_grp1, linewidth_grp1=0.5, linestyle_grp1="--", linecolor_grp1="b",
+            marker_coords=marker_coords, markersize=2, markerstyle="X", markercolor="g",
             fontname="STIXGeneral", fontsize=12,
             savefig_fname=figdir + filestr + "_invert_stack.pdf"
         )
@@ -273,7 +295,6 @@ if __name__ == "__main__":
     td_born_data_adjoint_image_multi_shot *= \
         np.linalg.norm(td_born_data_true_multi_shot) / np.linalg.norm(td_born_data_adjoint_image_multi_shot)
 
-    shotnum_list = [1, 3, 5, 7, 9]
     shot_scale = 1.0
 
     def plot_shot_comparison():

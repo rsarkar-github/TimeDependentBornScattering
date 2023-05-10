@@ -94,6 +94,8 @@ def plot_image_xy(
         xlabel=None, ylabel=None, fontname="Times New Roman", fontsize=15,
         nxticks=5, nyticks=5, xticklabels_fmt="{:4.1f}", yticklabels_fmt="{:4.1f}",
         draw_line_coords=None, linewidth=1, linestyle="-", linecolor="red",
+        draw_line_coords_grp1=None, linewidth_grp1=1, linestyle_grp1="-", linecolor_grp1="red",
+        marker_coords=None, markersize=2, markerstyle="X", markercolor="red",
         savefig_fname=None
 ):
 
@@ -131,10 +133,20 @@ def plot_image_xy(
     ax.set_yticks(yticks)
     ax.set_yticklabels(yticklabels, fontname=fontname, fontsize=fontsize)
 
-    # Optionally draw line
+    # Optionally draw line (Group 0)
     if draw_line_coords is not None:
         for item in draw_line_coords:
             plt.plot(item[0], item[1], color=linecolor, linewidth=linewidth, linestyle=linestyle)
+
+    # Optionally draw line (Group 1)
+    if draw_line_coords_grp1 is not None:
+        for item in draw_line_coords_grp1:
+            plt.plot(item[0], item[1], color=linecolor_grp1, linewidth=linewidth_grp1, linestyle=linestyle_grp1)
+
+    # Optionally draw points
+    if marker_coords is not None:
+        for item in marker_coords:
+            plt.plot(item[0], item[1], color=markercolor, linewidth=markersize, linestyle=markerstyle)
 
     # Create aligned colorbar on the right
     if colorbar:
@@ -286,7 +298,7 @@ def plot_shotrecord(rec, model, t0, tn, colorbar=True, clip=1.0):
     plt.close()
 
 
-def conjugate_gradient(linear_operator, rhs, x0=None, niter=5, c=0, printobj=False):
+def conjugate_gradient(linear_operator, rhs, x0=None, niter=5, printobj=False):
     """
     This function runs the conjugate gradient solver for solving the
     linear s.p.d. system Ax = b
