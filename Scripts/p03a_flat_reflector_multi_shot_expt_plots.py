@@ -194,8 +194,8 @@ if __name__ == "__main__":
             ylabel="Z [km]", xlabel="X [km]",
             grid="on", aspect="equal",
             draw_line_coords=draw_line_coords, linewidth=1.0, linestyle="-", linecolor="red",
-            draw_line_coords_grp1=draw_line_coords_grp1, linewidth_grp1=0.5, linestyle_grp1="--", linecolor_grp1="b",
-            marker_coords=marker_coords, markersize=2, markerstyle="X", markercolor="g",
+            draw_line_coords_grp1=draw_line_coords_grp1, linewidth_grp1=1.0, linestyle_grp1="--", linecolor_grp1="b",
+            marker_coords=marker_coords, markersize=4, markerstyle="x", markercolor="g",
             fontname="STIXGeneral", fontsize=12,
             savefig_fname=figdir + filestr + "_invert_stack.pdf"
         )
