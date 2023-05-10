@@ -146,7 +146,7 @@ def plot_image_xy(
     # Optionally draw points
     if marker_coords is not None:
         for item in marker_coords:
-            plt.plot(item[0], item[1], color=markercolor, linewidth=markersize, linestyle=markerstyle)
+            plt.plot(item[0], item[1], color=markercolor, markersize=markersize, marker=markerstyle)
 
     # Create aligned colorbar on the right
     if colorbar:
