@@ -143,6 +143,18 @@ if __name__ == "__main__":
     t_end = time.time()
     print("\nCreate adjoint image took ", t_end - t_start, " sec")
 
+    # Create modeled data
+    td_born_data_true = np.zeros((params["Ns"], params["Nt"], params["Nr"]), dtype=np.float32)
+    DevitoOperators.td_born_forward(
+        model_pert=dm,
+        born_data=td_born_data_true,
+        src_coords=src_coord,
+        vel=vel,
+        geometry=geometry,
+        solver=solver,
+        params=params,
+    )
+
     # ---------------------------------------------------------------------------------
     # Load inverted model
     dm_invert_multi_shot = np.load(datadir + filestr + ".npz")["arr_0"]
@@ -336,6 +348,7 @@ if __name__ == "__main__":
     def plot_residual():
 
         residual = np.load(datadir + filestr + ".npz")["arr_2"]
+        residual = residual / (np.linalg.norm(td_born_data_true) ** 2.0) + 1
         residual_max = np.max(residual)
         niter = residual.shape[0]
 
