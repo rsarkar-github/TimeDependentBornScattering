@@ -403,4 +403,7 @@ def conjugate_gradient(linear_operator, rhs, x0=None, niter=5, printobj=False):
     # Remove the effect of the scaling
     x = x * fac
 
-    return x, residual
+    if printobj:
+        return x, residual, objective
+    else:
+        return x, residual

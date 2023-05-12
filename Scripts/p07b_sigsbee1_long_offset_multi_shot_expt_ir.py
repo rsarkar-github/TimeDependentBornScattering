@@ -7,6 +7,7 @@ from examples.seismic.acoustic import AcousticWaveSolver
 from examples.seismic import AcquisitionGeometry
 from devito import configuration
 configuration['log-level'] = 'WARNING'
+# TODO: Update for CG obj correctly
 
 
 if __name__ == "__main__":

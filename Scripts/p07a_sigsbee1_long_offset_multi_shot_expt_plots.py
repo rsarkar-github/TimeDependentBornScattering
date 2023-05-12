@@ -345,7 +345,7 @@ if __name__ == "__main__":
 
     def plot_residual():
 
-        residual = np.load(datadir + filestr + ".npz")["arr_1"]
+        residual = np.load(datadir + filestr + ".npz")["arr_2"]
         residual_max = np.max(residual)
         niter = residual.shape[0]
 

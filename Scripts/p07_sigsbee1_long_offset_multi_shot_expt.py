@@ -178,13 +178,13 @@ if __name__ == "__main__":
     else:
         x0 = np.zeros((params["Nt"], params["Nx"], params["Nz"]), dtype=np.float32)
 
-    dm_invert, resid = conjugate_gradient(
+    dm_invert, resid, cgobj = conjugate_gradient(
         hessian_wrap,
         rhs=dm_adjoint_image,
         x0=x0,
         niter=niter,
-        printobj=False
+        printobj=True
     )
 
     # Save results
-    np.savez("TimeDependentBornScattering/Data/" + filestr + ".npz", dm_invert, resid)
+    np.savez("TimeDependentBornScattering/Data/" + filestr + ".npz", dm_invert, resid, cgobj)
