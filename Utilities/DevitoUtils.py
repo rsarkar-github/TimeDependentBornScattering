@@ -351,7 +351,7 @@ def conjugate_gradient(linear_operator, rhs, x0=None, niter=5, printobj=False):
     residual = [r_norm]
     if printobj:
         linear_operator(x, y)
-        objective = [np.real(0.5 * np.vdot(x, y) - np.vdot(x, rhs_new))]
+        objective = [(fac ** 2.0) * np.real(0.5 * np.vdot(x, y) - np.vdot(x, rhs_new))]
 
     # Run CG iterations
     for num_iter in range(niter):
@@ -395,7 +395,7 @@ def conjugate_gradient(linear_operator, rhs, x0=None, niter=5, printobj=False):
         residual.append(r_norm_new)
         if printobj:
             linear_operator(x, y)
-            objective.append(np.real(0.5 * np.vdot(x, y) - np.vdot(x, rhs_new)))
+            objective.append((fac ** 2.0) * np.real(0.5 * np.vdot(x, y) - np.vdot(x, rhs_new)))
 
         t2 = time.time()
         print("Iteration took ", t2 - t1, " s\n")
@@ -404,6 +404,6 @@ def conjugate_gradient(linear_operator, rhs, x0=None, niter=5, printobj=False):
     x = x * fac
 
     if printobj:
-        return x, residual, (fac ** 2.0) * objective
+        return x, residual, objective
     else:
         return x, residual
