@@ -349,7 +349,7 @@ if __name__ == "__main__":
 
         residual = np.load(datadir + filestr + ".npz")["arr_2"]
         f = np.linalg.norm(td_born_data_true) ** 2.0
-        residual = 1 + (residual / f)
+        residual = 1 + 2 * (residual / f)
         residual_max = np.max(residual)
         niter = residual.shape[0]
 
