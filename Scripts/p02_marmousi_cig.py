@@ -3,7 +3,7 @@ import scipy as sp
 import time
 import multiprocessing as mp
 from ..Operators import DevitoOperators
-from ..Utilities.DevitoUtils import create_model, plot_image_xy
+from ..Utilities.DevitoUtils import create_model
 from ..Utilities.Utils import extrapolate_same
 from examples.seismic.acoustic import AcousticWaveSolver
 from examples.seismic import AcquisitionGeometry
