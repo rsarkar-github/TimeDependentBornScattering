@@ -101,7 +101,7 @@ if __name__ == "__main__":
         image_titles = [["X = " + "{:4.1f}".format(item * vel.domain_size[0] * 1e-3) + " km" for item in locs]]
 
         plot_images_grid_xy(
-            image_grid=image_arr, image_titles=image_titles, axes_pad=0.5,
+            image_grid=image_arr, image_titles=image_titles, figsize=(10, 10), axes_pad=0.5,
             x0=t0, xn=tn / 2, y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
             scale=dm_scale, vmin=None, vmax=None,
             grid="on", aspect=cig_aspect, cmap="Greys", colorbar=True, clip=1.0,
