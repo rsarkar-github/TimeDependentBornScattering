@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
     basepath = "TimeDependentBornScattering/"
     datadir = basepath + "Data/"
-    filestr = "p11_microlocal_image_pert4"
+    filestr = "p12_microlocal_image_pert5"
 
     # Create params dicts
     params = {
@@ -72,12 +72,12 @@ if __name__ == "__main__":
     dt = vel.critical_dt
     for i in range(params["Nt"]):
         # start and end x indices
-        x_start = 2.49 + 0.5 * i * dt / 1000
-        x_end = 2.51 + 0.5 * i * dt / 1000
-        x_start_index = int(x_start * 1000 / vel.spacing[0])
-        x_end_index = int(x_end * 1000 / vel.spacing[0])
+        z_start = 0.49 + 0.5 * i * dt / 1000
+        z_end = 0.51 + 0.5 * i * dt / 1000
+        z_start_index = int(z_start * 1000 / vel.spacing[1])
+        z_end_index = int(z_end * 1000 / vel.spacing[1])
 
-        dm[i, x_start_index:x_end_index, int(params["Nz"] / 2)] = 1.0
+        dm[i, int(params["Nz"] / 2), z_start_index:z_end_index] = 1.0
 
     filter = np.asarray([1, 1, 1], dtype=np.float32) / 3.0
     ndimage.convolve1d(
