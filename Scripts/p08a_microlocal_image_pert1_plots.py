@@ -70,7 +70,7 @@ if __name__ == "__main__":
             shape=(image_nrows, image_ncols, params["Nt"], params["Nx"]),
             dtype=np.float32
         )
-        image_arr[1, 0, :, :] = dm_image[:, :, int(params["Nz"] * 0.5)]
+        image_arr[0, 0, :, :] = dm_image[:, :, int(params["Nz"] * 0.5)]
 
         image_titles = [["Z = 0.5 km"]]
 
