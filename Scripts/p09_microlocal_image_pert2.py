@@ -14,7 +14,7 @@ if __name__ == "__main__":
 
     basepath = "TimeDependentBornScattering/"
     datadir = basepath + "Data/"
-    filestr = "p08_microlocal_image_pert1"
+    filestr = "p09_microlocal_image_pert2"
 
     # Create params dicts
     params = {
@@ -68,7 +68,7 @@ if __name__ == "__main__":
     # Create dm
     # Note: params["Nt"] = 655
     # Note: vel.critical_dt = 3.062 ms
-    dm[:, int(params["Nx"] / 2), int(params["Nz"] / 2)] = 1.0
+    dm[50:300, int(params["Nx"] / 2), int(params["Nz"] / 2)] = 1.0
 
     # Time dependent Born propagator Hessian
     dm_image *= 0
