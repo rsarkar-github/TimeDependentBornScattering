@@ -23,6 +23,14 @@ Steps to install the packages are indicated below in the Section **How to instal
   - p06a_sigsbee_long_offset_multi_shot_expt_plots.py
   - p07_sigsbee1_long_offset_multi_shot_expt.py
   - p07a_sigsbee1_long_offset_multi_shot_expt_plots.py
+  - p08_microlocal_image_pert1.py
+  - p08a_microlocal_image_pert1_plots.py
+  - p09_microlocal_image_pert2.py
+  - p09a_microlocal_image_pert2_plots.py
+  - p10_microlocal_image_pert3.py
+  - p10a_microlocal_image_pert3_plots.py
+  - p11_microlocal_image_pert4.py
+  - p11a_microlocal_image_pert4_plots.py
 
 - For example, to run **p01_point_scatterers_image_cig_illustration.py**, navigate to the directory where you 
 git cloned this project, and from there execute 
