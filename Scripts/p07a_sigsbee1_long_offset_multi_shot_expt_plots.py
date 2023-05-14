@@ -372,7 +372,7 @@ if __name__ == "__main__":
         ax.set_yticklabels(yticklabels, fontname="STIXGeneral", fontsize=40)
 
         plt.xlabel("Iterations", fontname="STIXGeneral", fontsize=40)
-        plt.ylabel(r"$||v - \bar{v}||_2 \;/\; ||v||_2$", fontname="STIXGeneral", fontsize=40)
+        plt.ylabel(r"$||v - \bar{v}||^2_2 \;/\; ||v||^2_2$", fontname="STIXGeneral", fontsize=40)
 
         fig.savefig(figdir + filestr + "_obj.pdf", format="pdf", bbox_inches="tight", pad_inches=0.01)
 
