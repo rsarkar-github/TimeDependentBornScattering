@@ -94,6 +94,13 @@ if __name__ == "__main__":
         output=dm,
         mode='nearest'
     )
+    ndimage.convolve1d(
+        input=dm,
+        weights=filter,
+        axis=2,
+        output=dm,
+        mode='nearest'
+    )
 
     # Time dependent Born propagator Hessian
     dm_image *= 0

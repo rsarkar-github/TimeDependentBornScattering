@@ -77,13 +77,13 @@ if __name__ == "__main__":
         z_start_index = int(z_start * 1000 / vel.spacing[1])
         z_end_index = int(z_end * 1000 / vel.spacing[1])
 
-        dm[i, int(params["Nz"] / 2), z_start_index:z_end_index] = 1.0
+        dm[i, int(params["Nx"] / 2), z_start_index:z_end_index] = 1.0
 
     filter = np.asarray([1, 1, 1], dtype=np.float32) / 3.0
     ndimage.convolve1d(
         input=dm,
         weights=filter,
-        axis=1,
+        axis=2,
         output=dm,
         mode='nearest'
     )
@@ -91,6 +91,13 @@ if __name__ == "__main__":
         input=dm,
         weights=filter,
         axis=0,
+        output=dm,
+        mode='nearest'
+    )
+    ndimage.convolve1d(
+        input=dm,
+        weights=filter,
+        axis=1,
         output=dm,
         mode='nearest'
     )
