@@ -83,7 +83,7 @@ if __name__ == "__main__":
             scale=dm_scale, vmin=None, vmax=None,
             grid="on", aspect="auto", cmap="Greys", colorbar=True, clip=1.0,
             xlabel="X [km]", ylabel="Time [s]",
-            fontname="STIXGeneral", fontsize=20,
+            fontname="STIXGeneral", fontsize=40,
             nxticks=5, nyticks=5,
             savefig_fname=figdir + filestr + "_tx_images.pdf"
         )
@@ -109,7 +109,7 @@ if __name__ == "__main__":
             scale=dm_scale, vmin=None, vmax=None,
             grid="on", aspect=cig_aspect, cmap="Greys", colorbar=True, clip=1.0,
             xlabel="Time [s]", ylabel="Z [km]",
-            fontname="STIXGeneral", fontsize=20,
+            fontname="STIXGeneral", fontsize=40,
             nxticks=5, nyticks=5,
             savefig_fname=figdir + filestr + "_cigs.pdf"
         )
