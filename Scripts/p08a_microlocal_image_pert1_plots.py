@@ -56,7 +56,7 @@ if __name__ == "__main__":
     # Load dm_image
     dm_image = np.load(datadir + filestr + ".npz")["arr_0"]
     cig_aspect = 2
-    dm_scale = 50.0
+    dm_scale = 30.0
 
     def plot_slices_cigs():
 
@@ -89,20 +89,20 @@ if __name__ == "__main__":
         image_nrows = 1
         image_ncols = len(locs)
         image_arr = np.zeros(
-            shape=(image_nrows, image_ncols, params["Nz"], int(params["Nt"] / 2)),
+            shape=(image_nrows, image_ncols, params["Nz"], int(params["Nt"] * 0.66)),
             dtype=np.float32
         )
 
         for i, item in enumerate(locs):
             image_arr[0, i, :, :] = dm_image[
-                                    0:int(dm_image.shape[0] / 2), int(params["Nx"] * item), :
+                                    0:int(dm_image.shape[0] * 0.66), int(params["Nx"] * item), :
                                     ].T
 
         image_titles = [["X = " + "{:4.1f}".format(item * vel.domain_size[0] * 1e-3) + " km" for item in locs]]
 
         plot_images_grid_xy(
             image_grid=image_arr, image_titles=image_titles, figsize=(5, 10), axes_pad=0.5,
-            x0=t0, xn=tn / 2, y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
+            x0=t0, xn=tn * 0.66, y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
             scale=dm_scale, vmin=None, vmax=None,
             grid="on", aspect=cig_aspect, cmap="Greys", colorbar=True, clip=1.0,
             xlabel="Time [s]", ylabel="Z [km]",
