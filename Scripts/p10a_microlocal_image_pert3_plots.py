@@ -72,7 +72,7 @@ if __name__ == "__main__":
         )
         image_arr[0, 0, :, :] = dm_image[:, :, int(params["Nz"] * 0.2)]
 
-        image_titles = [["Z = 0.5 km"]]
+        image_titles = [["Z = 0.2 km"]]
 
         plot_images_grid_xy(
             image_grid=image_arr, image_titles=image_titles, axes_pad=0.5, figsize=(20, 10),
