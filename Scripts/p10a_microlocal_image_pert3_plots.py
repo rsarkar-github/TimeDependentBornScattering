@@ -10,7 +10,7 @@ if __name__ == "__main__":
     basepath = "TimeDependentBornScattering/"
     datadir = basepath + "Data/"
     figdir = basepath + "Fig/"
-    filestr = "p10a_microlocal_image_pert3"
+    filestr = "p10_microlocal_image_pert3"
 
     # Create params dicts
     params = {
