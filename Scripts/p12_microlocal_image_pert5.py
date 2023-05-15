@@ -2,8 +2,7 @@ import numpy as np
 from scipy import ndimage
 import time
 from ..Operators import DevitoOperators
-from ..Utilities.DevitoUtils import create_model, plot_image_xy, plot_images_grid_xy
-from ..Utilities.Utils import ricker_time
+from ..Utilities.DevitoUtils import create_model
 from examples.seismic.acoustic import AcousticWaveSolver
 from examples.seismic import AcquisitionGeometry
 from devito import configuration
@@ -11,7 +10,6 @@ configuration['log-level'] = 'WARNING'
 
 
 if __name__ == "__main__":
-
 
     basepath = "TimeDependentBornScattering/"
     datadir = basepath + "Data/"
@@ -79,28 +77,14 @@ if __name__ == "__main__":
 
         dm[i, int(params["Nx"] / 2), z_start_index:z_end_index] = 1.0
 
-    filter = np.asarray([1, 1, 1], dtype=np.float32) / 3.0
-    ndimage.convolve1d(
-        input=dm,
-        weights=filter,
-        axis=2,
-        output=dm,
-        mode='nearest'
+    temp = dm[:, int(params["Nx"] / 2), :]
+    ndimage.gaussian_filter(
+        input=temp,
+        sigma=3.0,
+        mode='nearest',
+        output=temp
     )
-    ndimage.convolve1d(
-        input=dm,
-        weights=filter,
-        axis=0,
-        output=dm,
-        mode='nearest'
-    )
-    ndimage.convolve1d(
-        input=dm,
-        weights=filter,
-        axis=1,
-        output=dm,
-        mode='nearest'
-    )
+    dm[:, int(params["Nx"] / 2), :] = temp
 
     # Time dependent Born propagator Hessian
     dm_image *= 0
