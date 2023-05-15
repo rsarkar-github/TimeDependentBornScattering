@@ -2,8 +2,7 @@ import numpy as np
 from scipy import ndimage
 import time
 from ..Operators import DevitoOperators
-from ..Utilities.DevitoUtils import create_model, plot_image_xy, plot_images_grid_xy
-from ..Utilities.Utils import ricker_time
+from ..Utilities.DevitoUtils import create_model
 from examples.seismic.acoustic import AcousticWaveSolver
 from examples.seismic import AcquisitionGeometry
 from devito import configuration
@@ -11,7 +10,6 @@ configuration['log-level'] = 'WARNING'
 
 
 if __name__ == "__main__":
-
 
     basepath = "TimeDependentBornScattering/"
     datadir = basepath + "Data/"
@@ -72,35 +70,21 @@ if __name__ == "__main__":
     dt = vel.critical_dt
     for i in range(params["Nt"]):
         # start and end x indices
-        x_start = 2.47 + 0.5 * i * dt / 1000
-        x_end = 2.53 + 0.5 * i * dt / 1000
+        x_start = 2.49 + 0.5 * i * dt / 1000
+        x_end = 2.51 + 0.5 * i * dt / 1000
         x_start_index = int(x_start * 1000 / vel.spacing[0])
         x_end_index = int(x_end * 1000 / vel.spacing[0])
 
         dm[i, x_start_index:x_end_index, int(params["Nz"] / 2)] = 1.0
 
-    filter = np.asarray([1, 1, 1], dtype=np.float32) / 3.0
-    ndimage.convolve1d(
-        input=dm,
-        weights=filter,
-        axis=1,
-        output=dm,
-        mode='nearest'
+    temp = dm[:, :, int(params["Nz"] / 2)]
+    ndimage.gaussian_filter(
+        input=temp,
+        sigma=3.0,
+        mode='nearest',
+        output=temp
     )
-    ndimage.convolve1d(
-        input=dm,
-        weights=filter,
-        axis=0,
-        output=dm,
-        mode='nearest'
-    )
-    ndimage.convolve1d(
-        input=dm,
-        weights=filter,
-        axis=2,
-        output=dm,
-        mode='nearest'
-    )
+    dm[:, :, int(params["Nz"] / 2)] = temp
 
     # Time dependent Born propagator Hessian
     dm_image *= 0
