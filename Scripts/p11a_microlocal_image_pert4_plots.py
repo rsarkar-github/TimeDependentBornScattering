@@ -64,17 +64,18 @@ if __name__ == "__main__":
         locs = [0.45, 0.5, 0.55]
 
         # Plot imaged data (t-x sections at depth values 50%)
-        image_nrows = 1
-        image_ncols = 1
+        image_nrows = 2
+        image_ncols = 2
         image_arr = np.zeros(
             shape=(image_nrows, image_ncols, params["Nt"], params["Nx"]),
             dtype=np.float32
         )
-        image_arr[0, 0, :, :] = dm_image[:, :, int(params["Nz"] * 0.4)]
-        image_arr[0, 1, :, :] = dm_image[:, :, int(params["Nz"] * 0.5)]
-        image_arr[1, 0, :, :] = dm_image[:, :, int(params["Nz"] * 0.6)]
+        image_arr[0, 0, :, :] = dm_image[:, :, int(params["Nz"] * 0.3)]
+        image_arr[0, 1, :, :] = dm_image[:, :, int(params["Nz"] * 0.4)]
+        image_arr[1, 0, :, :] = dm_image[:, :, int(params["Nz"] * 0.5)]
+        image_arr[1, 1, :, :] = dm_image[:, :, int(params["Nz"] * 0.6)]
 
-        image_titles = [["Z = 0.2 km"]]
+        image_titles = [["Z = 0.3 km", "Z = 0.4 km"], ["Z = 0.5 km", "Z = 0.6 km"]]
 
         plot_images_grid_xy(
             image_grid=image_arr, image_titles=image_titles, axes_pad=0.5, figsize=(20, 10),
@@ -103,7 +104,7 @@ if __name__ == "__main__":
         image_titles = [["X = " + "{:4.1f}".format(item * vel.domain_size[0] * 1e-3) + " km" for item in locs]]
 
         plot_images_grid_xy(
-            image_grid=image_arr, image_titles=image_titles, figsize=(5, 10), axes_pad=0.5,
+            image_grid=image_arr, image_titles=image_titles, figsize=(15, 10), axes_pad=0.5,
             x0=t0, xn=tn * 0.66, y0=vel.origin[1], yn=vel.origin[1] + vel.domain_size[1],
             scale=dm_scale, vmin=None, vmax=None,
             grid="on", aspect=cig_aspect, cmap="Greys", colorbar=True, clip=1.0,
