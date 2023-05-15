@@ -61,7 +61,7 @@ if __name__ == "__main__":
     def plot_slices_cigs():
 
         # Locations for CIGs
-        locs = [0.45, 0.5, 0.55]
+        locs = [0.52, 0.54, 0.56, 0.58, 0.6]
 
         # Plot imaged data (t-x sections at depth values 50%)
         image_nrows = 2
