@@ -70,8 +70,8 @@ if __name__ == "__main__":
     dt = vel.critical_dt
     for i in range(params["Nt"]):
         # start and end x indices
-        z_start = 0.47 + 0.15 * i * dt / 1000
-        z_end = 0.53 + 0.15 * i * dt / 1000
+        z_start = 0.47 + 0.5 * i * dt / 1000
+        z_end = 0.53 + 0.5 * i * dt / 1000
         z_start_index = int(z_start * 1000 / vel.spacing[1])
         z_end_index = int(z_end * 1000 / vel.spacing[1])
 
