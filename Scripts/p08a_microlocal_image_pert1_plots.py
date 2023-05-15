@@ -55,7 +55,7 @@ if __name__ == "__main__":
 
     # Load dm_image
     dm_image = np.load(datadir + filestr + ".npz")["arr_0"]
-    cig_aspect = 2
+    cig_aspect = 3
     dm_scale = 30.0
 
     def plot_slices_cigs():
