@@ -51,5 +51,5 @@ conda install -c anaconda numpy=1.23.5
 conda install -c anaconda scipy=1.10.0
 conda install -c numba numba=0.56.4
 conda install matplotlib=3.7.1
-pip install devito=4.8.0
+pip install devito==4.8.0
 ```
